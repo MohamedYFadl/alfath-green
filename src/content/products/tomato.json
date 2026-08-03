@@ -1,0 +1,26 @@
+{
+  "slug": "fresh-tomatoes",
+  "image": "../../assets/images/products/tomato.jpg",
+  "category": "vegetables",
+  "order": 50,
+  "name": {
+    "ar": "طماطم طازجة",
+    "en": "Fresh Tomatoes",
+    "fr": "Tomates fraîches"
+  },
+  "description": {
+    "ar": "طماطم أصناف طويلة العمر التخزيني، تُقطف عند مرحلة اللون الوردي لا الأحمر الكامل، لتصل إلى السوق في ذروة نضجها. متاحة على مدار العام من زراعات الحقل المفتوح والصوب.",
+    "en": "Long-shelf-life varieties, picked at the pink stage rather than full red so they arrive at peak ripeness. Available year-round from open-field and greenhouse plantings.",
+    "fr": "Variétés à longue conservation, cueillies au stade rose plutôt qu'au rouge plein afin d'arriver à pleine maturité. Disponibles toute l'année, en plein champ et sous serre."
+  },
+  "season": {
+    "ar": "متاح على مدار العام",
+    "en": "Available year-round",
+    "fr": "Disponible toute l'année"
+  },
+  "packaging": {
+    "ar": "أقفاص بلاستيك 6 كجم أو كرتون 5 كجم، فرز حسب المقاس من 47 مم إلى 82 مم",
+    "en": "6 kg plastic crates or 5 kg cartons, graded 47 mm to 82 mm",
+    "fr": "Cagettes plastique de 6 kg ou cartons de 5 kg, calibrage de 47 mm à 82 mm"
+  }
+}

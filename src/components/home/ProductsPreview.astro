@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '../SectionHead.astro';
+import ProductCard from '../ProductCard.astro';
+import Icon from '../Icon.astro';
+import { localizePath, useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const preview = t.home.products;
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="section" id="products" aria-labelledby="products-title">
+  <div class="container">
+    <SectionHead
+      eyebrow={preview.eyebrow}
+      title={preview.title}
+      sub={preview.sub}
+      center
+      id="products-title"
+    />
+
+    <div class="products-grid">
+      {products.map((product) => <ProductCard product={product} locale={locale} />)}
+    </div>
+
+    <div class="products-footer reveal">
+      <a class="btn btn--outline" href={localizePath('/products', locale)}>
+        {t.actions.viewAllProducts}
+        <Icon name="arrow-right" size={18} class="icon-arrow" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.375rem;
+  }
+
+  .products-footer {
+    display: flex;
+    justify-content: center;
+    margin-block-start: 2.75rem;
+  }
+
+  @media (max-width: 1000px) {
+    .products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

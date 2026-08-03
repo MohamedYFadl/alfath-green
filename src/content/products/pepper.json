@@ -1,0 +1,31 @@
+{
+  "slug": "bell-peppers",
+  "image": "../../assets/images/products/pepper.jpg",
+  "gallery": [
+    "../../assets/images/products/pepper.jpg",
+    "../../assets/images/products/pepper-2.jpg",
+    "../../assets/images/products/pepper-3.jpg"
+  ],
+  "category": "vegetables",
+  "order": 80,
+  "name": {
+    "ar": "فلفل رومي",
+    "en": "Bell Peppers",
+    "fr": "Poivrons"
+  },
+  "description": {
+    "ar": "فلفل رومي بالألوان الأحمر والأصفر والأخضر، ثلاثي أو رباعي الفصوص، بجدار سميك يتحمّل النقل. يُقطف بجزء من العنق لإطالة العمر التخزيني، ويُفرز لوناً ومقاساً على حدة.",
+    "en": "Red, yellow and green bell peppers, three- and four-lobed, with thick walls that hold up in transit. Cut with a length of stalk to extend shelf life, then graded by colour and size separately.",
+    "fr": "Poivrons rouges, jaunes et verts, à trois ou quatre lobes, à parois épaisses résistant au transport. Coupés avec une portion de pédoncule pour prolonger la conservation, puis triés séparément par couleur et par calibre."
+  },
+  "season": {
+    "ar": "أكتوبر – مايو",
+    "en": "October – May",
+    "fr": "Octobre – mai"
+  },
+  "packaging": {
+    "ar": "كرتون 5 كجم لون واحد أو ألوان مختلطة، مقاسات 70-90 مم و90-110 مم",
+    "en": "5 kg cartons, single colour or mixed, sizes 70–90 mm and 90–110 mm",
+    "fr": "Cartons de 5 kg, monochromes ou panachés, calibres 70–90 mm et 90–110 mm"
+  }
+}

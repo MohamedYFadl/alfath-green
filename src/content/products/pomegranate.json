@@ -1,0 +1,26 @@
+{
+  "slug": "pomegranates",
+  "image": "../../assets/images/products/pomegranate.jpg",
+  "category": "fruits",
+  "order": 40,
+  "name": {
+    "ar": "رمان",
+    "en": "Pomegranates",
+    "fr": "Grenades"
+  },
+  "description": {
+    "ar": "رمان صنف وندرفول بلون أحمر داكن وحبّ متماسك. يُفحص كل ثمرة يدوياً قبل التعبئة لاستبعاد التشقّقات الشعرية التي لا تظهر إلا تحت الضوء المائل.",
+    "en": "Wonderful variety pomegranates, deep red with firm arils. Every fruit is checked by hand before packing to catch the hairline cracks that only show under raking light.",
+    "fr": "Grenades de variété Wonderful, rouge profond et arilles fermes. Chaque fruit est contrôlé à la main avant conditionnement afin d'écarter les micro-fissures que seule une lumière rasante révèle."
+  },
+  "season": {
+    "ar": "سبتمبر – نوفمبر",
+    "en": "September – November",
+    "fr": "Septembre – novembre"
+  },
+  "packaging": {
+    "ar": "كرتون 4.5 كجم أو 10 كجم، مقاسات 8 إلى 16 حبة، مع فواصل كرتونية",
+    "en": "4.5 kg or 10 kg cartons, counts 8 to 16, with moulded fibre trays",
+    "fr": "Cartons de 4,5 kg ou 10 kg, calibres 8 à 16, avec alvéoles en fibre moulée"
+  }
+}

@@ -1,0 +1,193 @@
+---
+import { getImage } from 'astro:assets';
+import StatCard from '../StatCard.astro';
+import Icon from '../Icon.astro';
+import videoThumb from '../../assets/images/about-team.jpg';
+import { useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const about = t.home.about;
+
+// Optimised poster frame for the video element.
+const poster = await getImage({ src: videoThumb, widths: [800, 1200], format: 'webp' });
+---
+
+<section class="section section--after-hero about" id="about" aria-labelledby="about-title">
+  <div class="container about__grid">
+    <div class="about__text reveal">
+      <p class="eyebrow">{about.eyebrow}</p>
+      <h2 id="about-title">{about.title}</h2>
+      <p class="about__body">{about.body}</p>
+      <p class="about__body about__body--accent">{about.body2}</p>
+
+      <div class="about__stats">
+        {about.stats.map((stat) => <StatCard value={stat.value} label={stat.label} />)}
+      </div>
+    </div>
+
+    <div class="about__media reveal">
+      <figure class="video-frame" id="about-video">
+        <video
+          poster={poster.src}
+          preload="none"
+          playsinline
+          controls={false}
+          aria-label={about.videoLabel}
+        >
+          <source src="/videos/journey.mp4" type="video/mp4" />
+        </video>
+
+        <button type="button" class="video-frame__play" aria-label={t.actions.playVideo}>
+          <Icon name="play" size={26} filled stroke={0} />
+        </button>
+
+        <figcaption>{about.videoLabel}</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+    align-items: center;
+  }
+
+  .about__body {
+    color: var(--stone-gray);
+    font-size: 1rem;
+    max-inline-size: 52ch;
+    margin-block-start: 1rem;
+  }
+
+  .about__body--accent {
+    color: var(--soil-dark);
+    font-weight: 600;
+    border-inline-start: 3px solid var(--harvest-gold);
+    padding-inline-start: 1rem;
+  }
+
+  .about__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-block-start: 2.25rem;
+  }
+
+  /* ------------------------------ video ------------------------------ */
+
+  .video-frame {
+    position: relative;
+    margin: 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    background: var(--soil-dark);
+  }
+
+  .video-frame video {
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-frame__play {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+    inline-size: 76px;
+    block-size: 76px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--forest-green);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+    transition:
+      scale 0.25s var(--ease),
+      background-color 0.25s var(--ease);
+  }
+
+  :global([dir='rtl']) .video-frame__play {
+    translate: 50% -50%;
+  }
+
+  .video-frame__play :global(svg) {
+    /* nudge the triangle onto its optical centre */
+    margin-inline-start: 4px;
+  }
+
+  :global([dir='rtl']) .video-frame__play :global(svg) {
+    margin-inline-start: 0;
+    margin-inline-end: 4px;
+  }
+
+  .video-frame__play:hover {
+    scale: 1.08;
+    background: #fff;
+  }
+
+  .video-frame.is-playing .video-frame__play,
+  .video-frame.is-playing figcaption {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .video-frame figcaption {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding: 2.5rem 1.25rem 1.125rem;
+    background: linear-gradient(to top, rgba(21, 61, 24, 0.85), transparent);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: opacity 0.3s var(--ease);
+  }
+
+  @media (max-width: 900px) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about__media {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .about__stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const frame = document.getElementById('about-video');
+  const video = frame?.querySelector('video');
+  const play = frame?.querySelector('button');
+
+  if (frame && video && play) {
+    play.addEventListener('click', () => {
+      video.controls = true;
+      frame.classList.add('is-playing');
+      void video.play();
+    });
+
+    // Restore the poster treatment when the clip finishes.
+    video.addEventListener('ended', () => {
+      video.controls = false;
+      video.currentTime = 0;
+      frame.classList.remove('is-playing');
+    });
+  }
+</script>

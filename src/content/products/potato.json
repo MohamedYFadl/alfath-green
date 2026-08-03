@@ -1,0 +1,26 @@
+{
+  "slug": "potatoes",
+  "image": "../../assets/images/products/potato.jpg",
+  "category": "vegetables",
+  "order": 60,
+  "name": {
+    "ar": "بطاطس",
+    "en": "Potatoes",
+    "fr": "Pommes de terre"
+  },
+  "description": {
+    "ar": "أصناف سبونتا وهيرميس ومونديال من الأراضي الرملية والطميية. تُحصد وتُترك للتجفيف الميداني قبل الفرز، وتُعبّأ خالية من التربة الزائدة والإصابات الميكانيكية.",
+    "en": "Spunta, Hermes and Mondial varieties from sandy and loamy soils. Lifted and field-cured before grading, then packed free of excess soil and mechanical damage.",
+    "fr": "Variétés Spunta, Hermes et Mondial, issues de sols sableux et limoneux. Arrachées puis ressuyées au champ avant calibrage, et conditionnées sans excès de terre ni dommages mécaniques."
+  },
+  "season": {
+    "ar": "فبراير – يونيو، وأكتوبر – ديسمبر",
+    "en": "February – June, and October – December",
+    "fr": "Février – juin, et octobre – décembre"
+  },
+  "packaging": {
+    "ar": "شكائر 25 كجم أو أجولة شبكية 10 كجم، مقاسات 40-70 مم و70-100 مم",
+    "en": "25 kg bags or 10 kg mesh sacks, sizes 40–70 mm and 70–100 mm",
+    "fr": "Sacs de 25 kg ou filets de 10 kg, calibres 40–70 mm et 70–100 mm"
+  }
+}

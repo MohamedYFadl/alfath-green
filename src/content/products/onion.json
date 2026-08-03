@@ -1,0 +1,26 @@
+{
+  "slug": "golden-onions",
+  "image": "../../assets/images/products/onion.jpg",
+  "category": "vegetables",
+  "order": 70,
+  "name": {
+    "ar": "بصل ذهبي",
+    "en": "Golden Onions",
+    "fr": "Oignons dorés"
+  },
+  "description": {
+    "ar": "بصل ذهبي بقشرة جافة متماسكة ورقبة مقفولة — وهما المؤشران الأساسيان على عمر تخزيني طويل. يُعالَج بالتجفيف الطبيعي بعد الحصاد قبل دخوله خط الفرز.",
+    "en": "Golden onions with a tight dry skin and a closed neck — the two indicators that matter most for storage life. Naturally cured after harvest before entering the grading line.",
+    "fr": "Oignons dorés à la tunique sèche et bien fermée et au collet resserré — les deux indicateurs déterminants pour la conservation. Séchage naturel après récolte avant passage sur la ligne de calibrage."
+  },
+  "season": {
+    "ar": "مارس – يوليو",
+    "en": "March – July",
+    "fr": "Mars – juillet"
+  },
+  "packaging": {
+    "ar": "أجولة شبكية 25 كجم أو 10 كجم، مقاسات 40-60 مم و60-80 مم و80 مم فأكثر",
+    "en": "25 kg or 10 kg mesh sacks, sizes 40–60 mm, 60–80 mm and 80 mm+",
+    "fr": "Filets de 25 kg ou 10 kg, calibres 40–60 mm, 60–80 mm et 80 mm et plus"
+  }
+}

@@ -1,0 +1,74 @@
+---
+import { locales, switchLocalePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  class?: string;
+}
+
+const { locale, class: className } = Astro.props;
+const t = useTranslations(locale);
+
+const shortLabels: Record<Locale, string> = {
+  ar: t.language.arShort,
+  en: t.language.enShort,
+  fr: t.language.frShort,
+};
+
+const fullLabels: Record<Locale, string> = {
+  ar: t.language.ar,
+  en: t.language.en,
+  fr: t.language.fr,
+};
+---
+
+<div class:list={['lang-switch', className]} role="group" aria-label={t.language.label}>
+  {
+    locales.map((loc) => (
+      <a
+        href={switchLocalePath(Astro.url, loc)}
+        class:list={['lang-switch__item', { 'is-active': loc === locale }]}
+        hreflang={loc}
+        lang={loc}
+        aria-current={loc === locale ? 'true' : undefined}
+      >
+        <span aria-hidden="true">{shortLabels[loc]}</span>
+        <span class="sr-only">{fullLabels[loc]}</span>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+  }
+
+  .lang-switch__item {
+    padding: 0.3125rem 0.6875rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--stone-gray);
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease);
+  }
+
+  .lang-switch__item:hover {
+    color: var(--forest-green);
+    background: rgba(124, 179, 66, 0.12);
+  }
+
+  .lang-switch__item.is-active {
+    background: var(--fresh-green);
+    color: #fff;
+  }
+</style>

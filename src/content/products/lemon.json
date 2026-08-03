@@ -1,0 +1,31 @@
+{
+  "slug": "adalia-lemons",
+  "image": "../../assets/images/products/lemon.jpg",
+  "gallery": [
+    "../../assets/images/products/lemon.jpg",
+    "../../assets/images/products/lemon-2.jpg",
+    "../../assets/images/products/lemon-3.jpg"
+  ],
+  "category": "fruits",
+  "order": 20,
+  "name": {
+    "ar": "ليمون أضاليا",
+    "en": "Adalia Lemons",
+    "fr": "Citrons Adalia"
+  },
+  "description": {
+    "ar": "ليمون أضاليا بقشرة لامعة وحموضة عالية ونسبة عصير تتجاوز 30%. يُقطف بالمقص لتفادي جروح القشرة، ويدخل التبريد خلال ساعات من الحصاد للحفاظ على اللون الأخضر المصفرّ.",
+    "en": "Adalia lemons with a glossy skin, high acidity and juice content above 30%. Clipped by hand to avoid skin punctures, and into the cold chain within hours of harvest to hold the green-yellow colour.",
+    "fr": "Citrons Adalia à la peau brillante, très acides, avec une teneur en jus supérieure à 30 %. Cueillis au sécateur pour éviter les blessures de l'écorce, puis mis en froid dans les heures suivant la récolte afin de préserver la teinte vert-jaune."
+  },
+  "season": {
+    "ar": "أغسطس – مارس",
+    "en": "August – March",
+    "fr": "Août – mars"
+  },
+  "packaging": {
+    "ar": "كرتون 15 كجم أو أقفاص بلاستيك 10 كجم، مقاسات 100 إلى 200 حبة",
+    "en": "15 kg cartons or 10 kg plastic crates, counts 100 to 200",
+    "fr": "Cartons de 15 kg ou cagettes plastique de 10 kg, calibres 100 à 200"
+  }
+}

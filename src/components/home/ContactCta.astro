@@ -1,0 +1,131 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import logoFull from '../../assets/images/brand/logo-mark.png';
+import { contact, whatsappUrl } from '../../config/site';
+import { localizePath, useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const cta = t.home.cta;
+---
+
+<section class="cta-section" aria-labelledby="cta-title">
+  <!-- The handshake emblem anchors the Partnership pillar, kept at watermark
+       strength so it reads as texture rather than a second logo lockup. -->
+  <Image src={logoFull} alt="" width={620} height={620} class="cta-section__mark" loading="lazy" />
+
+  <div class="container cta-section__inner">
+    <div class="cta-section__text reveal">
+      <p class="eyebrow">{t.contact.eyebrow}</p>
+      <h2 id="cta-title">{cta.title}</h2>
+      <p>{cta.text}</p>
+    </div>
+
+    <div class="cta-section__actions reveal">
+      <a class="btn btn--primary btn--lg" href={localizePath('/contact', locale)}>
+        {cta.button}
+        <Icon name="arrow-right" size={18} class="icon-arrow" />
+      </a>
+      <a class="btn btn--ghost-light btn--lg" href={whatsappUrl} target="_blank" rel="noopener">
+        <Icon name="whatsapp" size={18} />
+        {t.contact.info.whatsapp}
+      </a>
+      <a class="cta-section__mail" href={`mailto:${contact.email}`} dir="ltr">{contact.email}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--forest-green);
+    color: #fff;
+    padding-block: var(--section-y);
+  }
+
+  .cta-section__mark {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: -120px;
+    translate: 0 -50%;
+    inline-size: 620px;
+    block-size: auto;
+    max-inline-size: none;
+    opacity: 0.07;
+    filter: grayscale(1) brightness(3);
+    pointer-events: none;
+  }
+
+  .cta-section__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+  }
+
+  .cta-section__text {
+    max-inline-size: 56ch;
+  }
+
+  .cta-section .eyebrow {
+    color: var(--harvest-gold-light);
+  }
+
+  .cta-section .eyebrow::after {
+    background: var(--harvest-gold-light);
+  }
+
+  .cta-section h2 {
+    color: #fff;
+    margin-block-end: 0.875rem;
+  }
+
+  .cta-section__text p {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 1.0625rem;
+  }
+
+  .cta-section__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .cta-section__mail {
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.2s var(--ease);
+  }
+
+  .cta-section__mail:hover {
+    color: var(--harvest-gold-light);
+  }
+
+  @media (max-width: 860px) {
+    .cta-section__inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .cta-section__actions {
+      inline-size: 100%;
+    }
+
+    .cta-section__mark {
+      inline-size: 420px;
+      inset-inline-end: -160px;
+    }
+  }
+</style>

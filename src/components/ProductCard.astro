@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { localizePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+  locale: Locale;
+  loading?: 'eager' | 'lazy';
+}
+
+const { product, locale, loading = 'lazy' } = Astro.props;
+const t = useTranslations(locale);
+const { data } = product;
+
+const name = data.name[locale];
+const href = localizePath(`/products/${data.slug}`, locale);
+---
+
+<article class="product-card card reveal" data-category={data.category}>
+  <a class="product-card__link" href={href}>
+    <div class="product-card__media">
+      <Image
+        src={data.image}
+        alt={name}
+        widths={[320, 480, 640]}
+        sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, 280px"
+        loading={loading}
+        class="product-card__img"
+      />
+      <span class="badge product-card__badge">{t.products.category[data.category]}</span>
+    </div>
+
+    <div class="product-card__body">
+      <h3>{name}</h3>
+      <p class="product-card__season">{data.season[locale]}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .product-card {
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--sage-green);
+  }
+
+  .product-card__link {
+    display: block;
+    block-size: 100%;
+  }
+
+  .product-card__media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--surface-muted);
+  }
+
+  .product-card__img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+
+  .product-card:hover .product-card__img {
+    transform: scale(1.06);
+  }
+
+  .product-card__badge {
+    position: absolute;
+    inset-block-start: 0.75rem;
+    inset-inline-start: 0.75rem;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(4px);
+  }
+
+  .product-card__body {
+    padding: 1rem 1.125rem 1.25rem;
+  }
+
+  .product-card__body h3 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .product-card__season {
+    margin-block-start: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--stone-gray);
+  }
+</style>

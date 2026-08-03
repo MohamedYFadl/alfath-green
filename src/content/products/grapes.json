@@ -1,0 +1,26 @@
+{
+  "slug": "table-grapes",
+  "image": "../../assets/images/products/grapes.jpg",
+  "category": "fruits",
+  "order": 30,
+  "name": {
+    "ar": "عنب مائدة",
+    "en": "Table Grapes",
+    "fr": "Raisin de table"
+  },
+  "description": {
+    "ar": "أصناف فليم سيدلس وسوبريور وكريمسون، بعناقيد متجانسة الحبّ ونسبة سكر لا تقل عن 16 بريكس عند القطف. يُعبّأ في الحقل مباشرة ويُبرَّد مبدئياً خلال ساعة لضمان ثبات العنقود.",
+    "en": "Flame Seedless, Superior and Crimson varieties, with uniform bunches and a minimum of 16 Brix at picking. Packed in the field and pre-cooled within the hour to keep the bunch firm.",
+    "fr": "Variétés Flame Seedless, Superior et Crimson, grappes homogènes et minimum 16 Brix à la cueillette. Conditionnement au champ et pré-refroidissement dans l'heure pour préserver la tenue de la grappe."
+  },
+  "season": {
+    "ar": "يونيو – أغسطس",
+    "en": "June – August",
+    "fr": "Juin – août"
+  },
+  "packaging": {
+    "ar": "صناديق 5 كجم أو 4.5 كجم بعبوات 500 جم، مع وسائد ماصّة وشرائح ثاني أكسيد الكبريت",
+    "en": "5 kg boxes, or 4.5 kg in 500 g punnets, with absorbent pads and SO₂ sheets",
+    "fr": "Caisses de 5 kg, ou 4,5 kg en barquettes de 500 g, avec absorbeurs et feuilles de SO₂"
+  }
+}

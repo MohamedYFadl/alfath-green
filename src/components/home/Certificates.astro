@@ -1,0 +1,117 @@
+---
+import SectionHead from '../SectionHead.astro';
+import Icon from '../Icon.astro';
+import { useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const certificates = t.home.certificates;
+
+const icons = ['leaf', 'shield', 'check', 'globe'] as const;
+---
+
+<section class="section section--surface" id="certificates" aria-labelledby="certificates-title">
+  <div class="container">
+    <SectionHead
+      eyebrow={certificates.eyebrow}
+      title={certificates.title}
+      sub={certificates.sub}
+      center
+      id="certificates-title"
+    />
+
+    <ul class="certs" role="list">
+      {
+        certificates.items.map((item, index) => (
+          <li class="cert reveal">
+            <span class="cert__icon">
+              <Icon name={icons[index]} size={20} />
+            </span>
+            <span class="cert__text">
+              <strong>{item.name}</strong>
+              <span>{item.desc}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="certs__note reveal">{certificates.note}</p>
+  </div>
+</section>
+
+<style>
+  .certs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+    list-style: none;
+  }
+
+  .cert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    /* Certification marks sit quiet until you look at them — the standard
+       treatment for a trust strip, and it keeps gold out of the base state. */
+    filter: grayscale(1);
+    opacity: 0.72;
+    transition:
+      filter 0.35s var(--ease),
+      opacity 0.35s var(--ease),
+      border-color 0.35s var(--ease),
+      transform 0.35s var(--ease);
+  }
+
+  .cert:hover {
+    filter: grayscale(0);
+    opacity: 1;
+    border-color: var(--harvest-gold);
+    transform: translateY(-3px);
+  }
+
+  .cert__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 38px;
+    block-size: 38px;
+    border-radius: 50%;
+    background: var(--harvest-gold);
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .cert__text strong {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--soil-dark);
+    line-height: 1.4;
+  }
+
+  .cert__text > span {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--stone-gray);
+    line-height: 1.5;
+  }
+
+  .certs__note {
+    margin-block-start: 1.75rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--stone-gray);
+    opacity: 0.85;
+  }
+</style>

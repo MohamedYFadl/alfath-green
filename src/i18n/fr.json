@@ -1,0 +1,249 @@
+{
+  "site": {
+    "name": "Al Fath Green",
+    "nameLatin": "AL FATH GREEN",
+    "tagline": "Exportation de produits agricoles frais",
+    "slogan": "De la terre du Nil, aux tables du monde"
+  },
+
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Services",
+    "products": "Produits",
+    "certificates": "Certifications",
+    "blog": "Blog",
+    "contact": "Contact",
+    "menu": "Menu",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "skipToContent": "Aller au contenu"
+  },
+
+  "actions": {
+    "requestCatalog": "Demander le catalogue",
+    "requestQuote": "Demander un devis",
+    "viewProducts": "Voir les produits",
+    "viewAllProducts": "Tous les produits",
+    "readMore": "Lire la suite",
+    "backToProducts": "Retour aux produits",
+    "backToBlog": "Retour au blog",
+    "contactUs": "Nous contacter",
+    "send": "Envoyer la demande",
+    "sending": "Envoi en cours…",
+    "playVideo": "Lire la vidéo",
+    "pauseVideo": "Mettre en pause",
+    "previousSlide": "Diapositive précédente",
+    "nextSlide": "Diapositive suivante",
+    "goToSlide": "Aller à la diapositive"
+  },
+
+  "language": {
+    "label": "Langue",
+    "ar": "العربية",
+    "en": "English",
+    "fr": "Français",
+    "arShort": "ع",
+    "enShort": "EN",
+    "frShort": "FR"
+  },
+
+  "home": {
+    "hero": {
+      "eyebrow": "Exportation égyptienne, directement de la source",
+      "title": "De la terre du Nil,<br />aux tables du monde",
+      "lead": "Nous cultivons, récoltons et exportons des fruits et légumes frais du delta du Nil — conditionnés selon les exigences d'importation européennes, avec une traçabilité complète du champ au port.",
+      "cards": [
+        { "value": "30+", "label": "Pays destinataires" },
+        { "value": "5 000+", "label": "Tonnes exportées par an" },
+        { "value": "15+", "label": "Années d'expérience à l'export" }
+      ],
+      "slides": [
+        "Champs verdoyants s'étendant dans le delta du Nil au lever du soleil",
+        "Les mains d'un agriculteur cueillant des tomates mûres au champ",
+        "Station de triage et de conditionnement avec des cagettes de tomates et de concombres",
+        "Camion frigorifique chargé de cagettes prêtes à l'exportation"
+      ]
+    },
+    "about": {
+      "eyebrow": "À propos",
+      "title": "Enracinés dans le delta du Nil, tournés vers les marchés mondiaux",
+      "body": "[Texte provisoire — en attente du contenu définitif du client] Al Fath Green a été fondée pour relier directement les terres agricoles égyptiennes aux importateurs, sans intermédiaires. Nous travaillons avec un réseau de fermes partenaires et suivons la récolte à chaque étape : choix des variétés et des semences, calendrier de récolte, conditionnement et transport frigorifique.",
+      "body2": "Ce qui nous distingue n'est pas le volume d'une expédition, mais sa régularité : le même calibre, le même conditionnement, à la date convenue — expédition après expédition.",
+      "stats": [
+        { "value": "[XX+]", "label": "Fermes partenaires" },
+        { "value": "[XX+]", "label": "Ouvriers et techniciens" },
+        { "value": "[XX+]", "label": "Pays destinataires" },
+        { "value": "[X,XXX]", "label": "Tonnes par an" }
+      ],
+      "videoLabel": "Une visite des champs et de la station de conditionnement",
+      "videoAlt": "L'équipe d'Al Fath Green inspectant la récolte au champ au coucher du soleil"
+    },
+    "services": {
+      "eyebrow": "Nos services",
+      "title": "Du champ au port",
+      "sub": "Une organisation intégrée couvrant chaque étape de la production et de l'exportation.",
+      "items": [
+        {
+          "title": "Récolte des fruits",
+          "desc": "Cueillette manuelle planifiée selon la saison de chaque variété, afin que le fruit atteigne sa maturité à l'arrivée, et non à la cueillette."
+        },
+        {
+          "title": "Triage et conditionnement des fruits",
+          "desc": "Tri par calibre et par catégorie, conditionnement conforme aux exigences d'importation européennes, avec étiquetage et identification des lots."
+        },
+        {
+          "title": "Exportation mondiale",
+          "desc": "Fret maritime et aérien frigorifique, dossier douanier complet et suivi de l'expédition jusqu'au port de destination."
+        },
+        {
+          "title": "Récolte des légumes",
+          "desc": "Cueillette quotidienne structurée qui suit le cycle de croissance de chaque variété afin de préserver la texture, le poids et le goût."
+        },
+        {
+          "title": "Triage et conditionnement des légumes",
+          "desc": "Lignes de tri automatisées et manuelles garantissant l'homogénéité de chaque cagette avant l'entrée en chaîne du froid."
+        },
+        {
+          "title": "Stockage et conservation",
+          "desc": "Chambres froides réglées à la température propre à chaque variété, de la récolte jusqu'au chargement."
+        }
+      ]
+    },
+    "products": {
+      "eyebrow": "Nos produits",
+      "title": "Ce que donne la terre d'Égypte",
+      "sub": "Une gamme de fruits et légumes frais, disponibles selon les saisons de récolte tout au long de l'année."
+    },
+    "certificates": {
+      "eyebrow": "Certifications",
+      "title": "La qualité n'est pas une promesse, c'est un document",
+      "sub": "Chaque expédition répond aux normes de sécurité alimentaire reconnues à l'international.",
+      "items": [
+        { "name": "GlobalG.A.P", "desc": "Bonnes pratiques agricoles" },
+        { "name": "ISO 22000", "desc": "Management de la sécurité des denrées" },
+        { "name": "HACCP", "desc": "Analyse des dangers et points critiques" },
+        { "name": "Autorité égyptienne d'exportation", "desc": "Exportateur enregistré" }
+      ],
+      "note": "[Logos provisoires — en attente des certificats officiels du client]"
+    },
+    "cta": {
+      "title": "Prêts à engager un partenariat d'exportation",
+      "text": "Envoyez-nous votre cahier des charges — variété, volume et catégorie — et nous vous répondrons sous 24 heures ouvrées.",
+      "button": "Commencer"
+    }
+  },
+
+  "products": {
+    "eyebrow": "Produits",
+    "title": "Fruits et légumes",
+    "sub": "Parcourez la gamme complète. Chaque variété avec sa saison et son conditionnement.",
+    "filterLabel": "Filtrer par catégorie",
+    "filters": {
+      "all": "Tous",
+      "fruits": "Fruits",
+      "vegetables": "Légumes"
+    },
+    "count": "produits",
+    "empty": "Aucun produit dans cette catégorie pour le moment.",
+    "category": {
+      "fruits": "Fruits",
+      "vegetables": "Légumes"
+    },
+    "specs": {
+      "title": "Caractéristiques",
+      "season": "Saison",
+      "packaging": "Conditionnement",
+      "category": "Catégorie"
+    },
+    "gallery": "Galerie du produit",
+    "quoteTitle": "Ce produit vous intéresse ?",
+    "quoteText": "Indiquez-nous le volume et la catégorie souhaités et nous vous adresserons un devis détaillé.",
+    "related": "Ces produits pourraient aussi vous intéresser"
+  },
+
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Depuis le champ : notes et saisons",
+    "sub": "Des notes sur le calendrier des récoltes, les normes de conditionnement et ce qui se passe réellement sur le terrain.",
+    "published": "Publié le",
+    "readingTime": "min de lecture",
+    "empty": "Aucun article publié pour le moment.",
+    "more": "Autres articles"
+  },
+
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Entamons la conversation",
+    "sub": "Remplissez le formulaire et nous vous répondrons sous 24 heures ouvrées, ou contactez-nous directement via les coordonnées ci-dessous.",
+    "form": {
+      "title": "Envoyer votre demande",
+      "name": "Nom complet",
+      "namePlaceholder": "ex. Ahmed Mahmoud",
+      "email": "Adresse e-mail",
+      "emailPlaceholder": "nom@entreprise.com",
+      "company": "Société",
+      "companyPlaceholder": "Nom de la société (facultatif)",
+      "country": "Pays",
+      "countryPlaceholder": "ex. Émirats arabes unis",
+      "product": "Produit concerné",
+      "productPlaceholder": "ex. Oranges Navel",
+      "message": "Votre message",
+      "messagePlaceholder": "Précisez la variété, le volume, la catégorie et le port de destination…",
+      "required": "Ce champ est obligatoire",
+      "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
+      "success": "Votre message nous est bien parvenu. Nous vous répondrons sous 24 heures ouvrées.",
+      "error": "L'envoi de votre message a échoué. Veuillez réessayer ou nous écrire directement par e-mail.",
+      "notConfigured": "Le formulaire n'est pas encore connecté — les clés EmailJS doivent être définies dans les variables d'environnement."
+    },
+    "info": {
+      "title": "Coordonnées",
+      "phone": "Téléphone",
+      "whatsapp": "WhatsApp",
+      "email": "E-mail",
+      "address": "Adresse",
+      "hours": "Horaires",
+      "hoursValue": "Dimanche – jeudi, 9h – 17h (heure du Caire)"
+    },
+    "mapPlaceholder": "[Carte de localisation — en attente de l'adresse définitive du client]",
+    "mapAlt": "Image provisoire d'une carte de localisation"
+  },
+
+  "footer": {
+    "about": "Nous exportons des fruits et légumes frais de la terre égyptienne vers les marchés arabes et européens.",
+    "quickLinks": "Liens rapides",
+    "contactTitle": "Contact",
+    "followTitle": "Suivez-nous",
+    "rights": "Tous droits réservés.",
+    "placeholderNote": "Coordonnées provisoires en attente du contenu définitif."
+  },
+
+  "seo": {
+    "home": {
+      "title": "Al Fath Green | Exportation de fruits et légumes frais d'Égypte",
+      "description": "Al Fath Green est un exportateur égyptien de fruits et légumes frais vers les marchés arabes et européens — normes GlobalG.A.P et traçabilité complète du champ au port."
+    },
+    "products": {
+      "title": "Nos produits | Fruits et légumes égyptiens à l'export",
+      "description": "Découvrez la gamme Al Fath Green de fruits et légumes égyptiens frais destinés à l'export — saisons de disponibilité, catégories et conditionnement de chaque variété."
+    },
+    "blog": {
+      "title": "Blog | Saisons de récolte et normes d'exportation",
+      "description": "Articles d'Al Fath Green sur le calendrier des récoltes en Égypte, les normes de conditionnement et d'exportation, et la chaîne du froid."
+    },
+    "contact": {
+      "title": "Nous contacter | Demander un devis",
+      "description": "Contactez Al Fath Green pour un devis d'exportation de fruits et légumes égyptiens frais. Réponse sous 24 heures ouvrées."
+    },
+    "notFound": {
+      "title": "Page introuvable",
+      "description": "La page demandée n'est pas disponible."
+    }
+  },
+
+  "notFound": {
+    "title": "Page introuvable",
+    "text": "Le lien que vous avez ouvert est incorrect, ou la page a été déplacée.",
+    "button": "Retour à l'accueil"
+  }
+}

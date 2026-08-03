@@ -1,0 +1,26 @@
+{
+  "slug": "navel-oranges",
+  "image": "../../assets/images/products/orange.jpg",
+  "category": "fruits",
+  "order": 10,
+  "name": {
+    "ar": "برتقال أبو سرة",
+    "en": "Navel Oranges",
+    "fr": "Oranges Navel"
+  },
+  "description": {
+    "ar": "برتقال أبو سرة المصري، معروف بقشرته السميكة التي تتحمّل الشحن الطويل وبلبّه الخالي من البذور. نقطفه على مراحل حسب درجة اللون والسكر، ونفرزه بالمقاسات من 56 إلى 113 حبة في الصندوق.",
+    "en": "Egyptian Navel oranges, known for a thick peel that travels well and seedless flesh. We pick in successive passes according to colour break and sugar level, then sort into counts from 56 to 113 per carton.",
+    "fr": "Oranges Navel d'Égypte, reconnues pour une peau épaisse qui supporte le transport et une chair sans pépins. La cueillette se fait en plusieurs passages selon la coloration et le taux de sucre, puis le tri s'effectue en calibres de 56 à 113 fruits par carton."
+  },
+  "season": {
+    "ar": "ديسمبر – أبريل",
+    "en": "December – April",
+    "fr": "Décembre – avril"
+  },
+  "packaging": {
+    "ar": "كرتون 15 كجم، مقاسات 56/64/72/80/88/100/113 — على بالتات 20 طن للحاوية المبرّدة 40 قدم",
+    "en": "15 kg telescopic cartons, counts 56/64/72/80/88/100/113 — palletised, 20 t per 40ft reefer",
+    "fr": "Cartons télescopiques de 15 kg, calibres 56/64/72/80/88/100/113 — palettisés, 20 t par conteneur reefer 40 pieds"
+  }
+}

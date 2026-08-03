@@ -1,0 +1,245 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import logoMark from '../assets/images/brand/logo-mark.png';
+import { contact, footerNav, social, whatsappUrl, foundedYear } from '../config/site';
+import { localizePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+const copyrightYears = year > foundedYear ? `${foundedYear}–${year}` : String(foundedYear);
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="footer-logo" href={localizePath('/', locale)}>
+          <Image src={logoMark} alt="" width={52} height={52} loading="lazy" />
+          <span>
+            <strong>{t.site.name}</strong>
+            <em>{t.site.nameLatin}</em>
+          </span>
+        </a>
+        <p>{t.footer.about}</p>
+        <p class="footer-slogan">{t.site.slogan}</p>
+      </div>
+
+      <nav class="footer-col" aria-label={t.footer.quickLinks}>
+        <h2>{t.footer.quickLinks}</h2>
+        <ul role="list">
+          {
+            footerNav.map((item) => (
+              <li>
+                <a href={localizePath(item.path, locale)}>{t.nav[item.key]}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2>{t.footer.contactTitle}</h2>
+        <ul role="list" class="footer-contact">
+          <li>
+            <Icon name="phone" size={17} />
+            <a href={`tel:${contact.phone.replace(/\s/g, '')}`} dir="ltr">{contact.phone}</a>
+          </li>
+          <li>
+            <Icon name="whatsapp" size={17} />
+            <a href={whatsappUrl} target="_blank" rel="noopener">{t.contact.info.whatsapp}</a>
+          </li>
+          <li>
+            <Icon name="mail" size={17} />
+            <a href={`mailto:${contact.email}`} dir="ltr">{contact.email}</a>
+          </li>
+          <li>
+            <Icon name="map-pin" size={17} />
+            <span>{contact.address[locale]}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h2>{t.footer.followTitle}</h2>
+        <ul role="list" class="footer-social">
+          {
+            social.map((item) => (
+              <li>
+                <a href={item.href} target="_blank" rel="noopener" aria-label={item.name}>
+                  <Icon name={item.icon} size={19} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {copyrightYears} {t.site.name} — {t.footer.rights}</p>
+      <p class="footer-note">{t.footer.placeholderNote}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--forest-deep);
+    color: rgba(255, 255, 255, 0.68);
+    padding-block: clamp(3rem, 2rem + 3.5vw, 4rem) 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(3, 1fr);
+    gap: clamp(2rem, 1rem + 3vw, 3.5rem);
+    padding-block-end: 2.5rem;
+  }
+
+  .footer-brand p {
+    margin-block-start: 1rem;
+    max-inline-size: 34ch;
+    font-size: 0.9063rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .footer-slogan {
+    color: var(--harvest-gold-light) !important;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6875rem;
+  }
+
+  .footer-logo img {
+    inline-size: 52px;
+    block-size: 52px;
+    object-fit: contain;
+  }
+
+  .footer-logo strong {
+    display: block;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .footer-logo em {
+    display: block;
+    font-style: normal;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer-col h2 {
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    margin-block-end: 1rem;
+  }
+
+  .footer-col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    list-style: none;
+  }
+
+  .footer-col a {
+    color: rgba(255, 255, 255, 0.65);
+    transition: color 0.2s var(--ease);
+  }
+
+  .footer-col a:hover {
+    color: var(--harvest-gold-light);
+  }
+
+  .footer-contact li {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .footer-contact :global(svg) {
+    color: var(--sage-green);
+    flex-shrink: 0;
+  }
+
+  .footer-social {
+    flex-direction: row !important;
+    gap: 0.625rem !important;
+    flex-wrap: wrap;
+  }
+
+  .footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 40px;
+    block-size: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.75);
+    transition:
+      background-color 0.25s var(--ease),
+      color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+
+  .footer-social a:hover {
+    background: var(--fresh-green);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-block-start: 1px solid rgba(255, 255, 255, 0.12);
+    padding-block-start: 1.5rem;
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer-note {
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

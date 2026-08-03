@@ -1,0 +1,45 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  sub?: string;
+  center?: boolean;
+  /** Renders on a dark background (contact CTA section). */
+  light?: boolean;
+  as?: 'h1' | 'h2';
+  id?: string;
+}
+
+const { eyebrow, title, sub, center = false, light = false, as: Tag = 'h2', id } = Astro.props;
+---
+
+<div
+  class:list={[
+    'section-head',
+    'reveal',
+    { 'section-head--center': center, 'section-head--light': light },
+  ]}
+>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <Tag id={id} set:html={title} />
+  {sub && <p class="section-sub">{sub}</p>}
+</div>
+
+<style>
+  .section-head--light :global(h1),
+  .section-head--light :global(h2) {
+    color: #fff;
+  }
+
+  .section-head--light .eyebrow {
+    color: var(--harvest-gold-light);
+  }
+
+  .section-head--light .eyebrow::after {
+    background: var(--harvest-gold-light);
+  }
+
+  .section-head--light .section-sub {
+    color: rgba(255, 255, 255, 0.78);
+  }
+</style>

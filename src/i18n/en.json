@@ -1,0 +1,249 @@
+{
+  "site": {
+    "name": "Al Fath Green",
+    "nameLatin": "AL FATH GREEN",
+    "tagline": "Export of Fresh Agricultural Crops",
+    "slogan": "From the Nile's soil, to the world's table"
+  },
+
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "products": "Products",
+    "certificates": "Certificates",
+    "blog": "Blog",
+    "contact": "Contact",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to content"
+  },
+
+  "actions": {
+    "requestCatalog": "Request Catalog",
+    "requestQuote": "Request a Quote",
+    "viewProducts": "View Products",
+    "viewAllProducts": "View All Products",
+    "readMore": "Read more",
+    "backToProducts": "Back to products",
+    "backToBlog": "Back to blog",
+    "contactUs": "Contact us",
+    "send": "Send request",
+    "sending": "Sending…",
+    "playVideo": "Play video",
+    "pauseVideo": "Pause video",
+    "previousSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "goToSlide": "Go to slide"
+  },
+
+  "language": {
+    "label": "Language",
+    "ar": "العربية",
+    "en": "English",
+    "fr": "Français",
+    "arShort": "ع",
+    "enShort": "EN",
+    "frShort": "FR"
+  },
+
+  "home": {
+    "hero": {
+      "eyebrow": "Egyptian export, direct from the source",
+      "title": "From the Nile's soil,<br />to the world's table",
+      "lead": "We grow, harvest and export fresh fruit and vegetables from the Nile Delta — packed to European import standards, with full traceability from field to port.",
+      "cards": [
+        { "value": "30+", "label": "Countries we export to" },
+        { "value": "5,000+", "label": "Tonnes exported annually" },
+        { "value": "15+", "label": "Years of export experience" }
+      ],
+      "slides": [
+        "Green fields stretching across the Nile Delta at sunrise",
+        "A farmer's hands picking ripe tomatoes in the field",
+        "Sorting and packing hall with crates of tomatoes and cucumbers",
+        "A refrigerated truck being loaded with crates ready for export"
+      ]
+    },
+    "about": {
+      "eyebrow": "About us",
+      "title": "Rooted in the Nile Delta, built for global markets",
+      "body": "[Placeholder copy — awaiting final content from the client] Al Fath Green was founded to connect Egyptian farmland directly with importers, without middlemen. We work with a network of partner farms and follow the crop at every stage: variety and seed selection, harvest timing, packing, and refrigerated shipping.",
+      "body2": "What sets us apart isn't the size of a shipment — it's its consistency: the same grade, the same packaging, on the agreed date. Shipment after shipment.",
+      "stats": [
+        { "value": "[XX+]", "label": "Partner farms" },
+        { "value": "[XX+]", "label": "Workers & technicians" },
+        { "value": "[XX+]", "label": "Export destinations" },
+        { "value": "[X,XXX]", "label": "Tonnes per year" }
+      ],
+      "videoLabel": "A tour through the fields and the packing house",
+      "videoAlt": "The Al Fath Green team inspecting the crop in the field at sunset"
+    },
+    "services": {
+      "eyebrow": "Our services",
+      "title": "From the field to the port",
+      "sub": "An integrated operation covering every stage of growing and exporting the crop.",
+      "items": [
+        {
+          "title": "Fruit Harvesting",
+          "desc": "Hand-picked on a schedule set by each variety's season, so the fruit reaches the right ripeness on arrival — not at picking."
+        },
+        {
+          "title": "Fruit Sorting & Packing",
+          "desc": "Sorted by size and grade, packed to European import requirements with full labelling and lot identification."
+        },
+        {
+          "title": "Global Export",
+          "desc": "Refrigerated sea and air freight with complete customs documentation, tracked through to the destination port."
+        },
+        {
+          "title": "Vegetable Harvesting",
+          "desc": "Daily structured picking that follows each variety's growth cycle to protect texture, weight and taste."
+        },
+        {
+          "title": "Vegetable Sorting & Packing",
+          "desc": "Automated and manual sorting lines that keep every crate uniform before it enters the cold chain."
+        },
+        {
+          "title": "Storage & Preservation",
+          "desc": "Cold stores held at the right temperature for each variety, keeping produce fresh from harvest to loading."
+        }
+      ]
+    },
+    "products": {
+      "eyebrow": "Our products",
+      "title": "What Egyptian soil gives",
+      "sub": "A range of fresh fruit and vegetables, available according to the harvest seasons across the year."
+    },
+    "certificates": {
+      "eyebrow": "Certifications",
+      "title": "Quality isn't a promise — it's a document",
+      "sub": "Every shipment we release meets internationally recognised food safety standards.",
+      "items": [
+        { "name": "GlobalG.A.P", "desc": "Good Agricultural Practices" },
+        { "name": "ISO 22000", "desc": "Food safety management" },
+        { "name": "HACCP", "desc": "Hazard analysis & critical control points" },
+        { "name": "Egyptian Export Authority", "desc": "Registered exporter" }
+      ],
+      "note": "[Placeholder marks — awaiting official certificate files from the client]"
+    },
+    "cta": {
+      "title": "Ready to start an export partnership",
+      "text": "Send us your requirements — variety, volume and grade — and we'll come back to you within 24 working hours.",
+      "button": "Get started"
+    }
+  },
+
+  "products": {
+    "eyebrow": "Products",
+    "title": "Fruit & vegetables",
+    "sub": "Browse the full range. Each variety with its season and packing details.",
+    "filterLabel": "Filter by category",
+    "filters": {
+      "all": "All",
+      "fruits": "Fruits",
+      "vegetables": "Vegetables"
+    },
+    "count": "products",
+    "empty": "No products in this category yet.",
+    "category": {
+      "fruits": "Fruits",
+      "vegetables": "Vegetables"
+    },
+    "specs": {
+      "title": "Specifications",
+      "season": "Season",
+      "packaging": "Packaging",
+      "category": "Category"
+    },
+    "gallery": "Product gallery",
+    "quoteTitle": "Interested in this product?",
+    "quoteText": "Tell us the volume and grade you need and we'll send you a detailed quotation.",
+    "related": "You may also be interested in"
+  },
+
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "From the field: notes and seasons",
+    "sub": "Notes on harvest timing, packing standards, and what is actually happening on the land.",
+    "published": "Published on",
+    "readingTime": "min read",
+    "empty": "No articles published yet.",
+    "more": "More articles"
+  },
+
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's start the conversation",
+    "sub": "Fill in the form and we'll reply within 24 working hours, or reach us directly through the details below.",
+    "form": {
+      "title": "Send your request",
+      "name": "Full name",
+      "namePlaceholder": "e.g. Ahmed Mahmoud",
+      "email": "Email address",
+      "emailPlaceholder": "name@company.com",
+      "company": "Company",
+      "companyPlaceholder": "Company name (optional)",
+      "country": "Country",
+      "countryPlaceholder": "e.g. United Arab Emirates",
+      "product": "Product of interest",
+      "productPlaceholder": "e.g. Navel oranges",
+      "message": "Your message",
+      "messagePlaceholder": "Tell us the variety, volume, grade and destination port…",
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address.",
+      "success": "Your message reached us. We'll reply within 24 working hours.",
+      "error": "We couldn't send your message. Please try again, or email us directly.",
+      "notConfigured": "The form isn't connected yet — EmailJS keys need to be set in the environment variables."
+    },
+    "info": {
+      "title": "Contact details",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "address": "Address",
+      "hours": "Working hours",
+      "hoursValue": "Sunday – Thursday, 9am – 5pm (Cairo time)"
+    },
+    "mapPlaceholder": "[Location map — awaiting the final address from the client]",
+    "mapAlt": "Placeholder image of a location map"
+  },
+
+  "footer": {
+    "about": "We export fresh fruit and vegetables from Egyptian soil to Arab and European markets.",
+    "quickLinks": "Quick links",
+    "contactTitle": "Contact",
+    "followTitle": "Follow us",
+    "rights": "All rights reserved.",
+    "placeholderNote": "Contact details are placeholders pending final content."
+  },
+
+  "seo": {
+    "home": {
+      "title": "Al Fath Green | Fresh Fruit & Vegetable Export from Egypt",
+      "description": "Al Fath Green is an Egyptian exporter of fresh fruit and vegetables to Arab and European markets — GlobalG.A.P standards and full traceability from field to port."
+    },
+    "products": {
+      "title": "Our Products | Egyptian Fruit & Vegetables for Export",
+      "description": "Browse Al Fath Green's range of fresh Egyptian fruit and vegetables for export — availability seasons, grades and packing details for every variety."
+    },
+    "blog": {
+      "title": "Blog | Harvest Seasons & Export Standards",
+      "description": "Articles from Al Fath Green on Egyptian harvest timing, packing and export standards, and the cold chain."
+    },
+    "contact": {
+      "title": "Contact Us | Request a Quote",
+      "description": "Get in touch with Al Fath Green for a quotation on fresh Egyptian fruit and vegetable exports. We reply within 24 working hours."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you requested is not available."
+    }
+  },
+
+  "notFound": {
+    "title": "Page not found",
+    "text": "The link you opened is incorrect, or the page has moved.",
+    "button": "Back to home"
+  }
+}

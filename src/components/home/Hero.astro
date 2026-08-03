@@ -1,0 +1,578 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import heroField from '../../assets/images/hero/hero-field.jpg';
+import heroHarvest from '../../assets/images/hero/hero-harvest.jpg';
+import heroPacking from '../../assets/images/hero/hero-packing.jpg';
+import heroExport from '../../assets/images/hero/hero-export.jpg';
+import { localizePath, useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const hero = t.home.hero;
+
+const slides = [heroField, heroHarvest, heroPacking, heroExport];
+
+/** Certification marks are proper nouns — the same in all three languages. */
+const certifications = ['GlobalG.A.P', 'ISO 22000', 'HACCP'] as const;
+
+const cardIcons = ['globe', 'ship', 'star'] as const;
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__grid">
+    <div class="hero__text">
+      <p class="eyebrow anim-up" style="--delay:.05s">{hero.eyebrow}</p>
+
+      <h1 id="hero-title" class="anim-up" style="--delay:.15s" set:html={hero.title} />
+
+      <p class="hero__lead anim-up" style="--delay:.25s">{hero.lead}</p>
+
+      <div class="hero__ctas anim-up" style="--delay:.35s">
+        <a class="btn btn--primary btn--lg" href={localizePath('/products', locale)}>
+          {t.actions.viewProducts}
+          <Icon name="arrow-right" size={18} class="icon-arrow" />
+        </a>
+        <a class="btn btn--outline btn--lg" href={localizePath('/contact', locale)}>
+          {t.actions.requestQuote}
+        </a>
+      </div>
+
+      <ul class="hero__certs anim-up" style="--delay:.45s" role="list">
+        {
+          certifications.map((cert) => (
+            <li class="hero__cert">
+              <Icon name="check" size={13} stroke={2.6} />
+              <span>{cert}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div
+      class="hero__visual"
+      id="hero-slider"
+      role="group"
+      aria-roledescription="carousel"
+      aria-label={t.site.slogan}
+    >
+      {
+        slides.map((image, index) => (
+          <figure class:list={['hero__slide', { 'is-active': index === 0 }]} data-slide={index}>
+            <Image
+              src={image}
+              alt={hero.slides[index]}
+              widths={[720, 1080, 1440, 1800]}
+              sizes="(max-width: 900px) 100vw, 55vw"
+              loading={index === 0 ? 'eager' : 'lazy'}
+              fetchpriority={index === 0 ? 'high' : 'auto'}
+            />
+          </figure>
+        ))
+      }
+
+      <div class="hero__dots" role="tablist" aria-label={t.actions.goToSlide}>
+        {
+          slides.map((_, index) => (
+            <button
+              type="button"
+              role="tab"
+              class:list={['hero__dot', { 'is-active': index === 0 }]}
+              data-dot={index}
+              aria-selected={index === 0 ? 'true' : 'false'}
+              aria-label={`${t.actions.goToSlide} ${index + 1}`}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  {/* Sits over the photograph on desktop; drops into the flow on small screens
+      so the figures stay readable instead of crowding the image. */}
+  <div class="hero__cards" id="hero-cards">
+    {
+      hero.cards.map((card, index) => (
+        <div class="hero__card anim-in" style={`--delay:${0.6 + index * 0.12}s;--drift:${8 + index * 1.4}s`}>
+          <span class="hero__card-icon">
+            <Icon name={cardIcons[index]} size={18} />
+          </span>
+          <span class="hero__card-body">
+            <strong dir="ltr">{card.value}</strong>
+            <span>{card.label}</span>
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  /* The header is taken out of the flow on this page (see Header.astro), so
+     the hero owns the very top of the page and the photograph runs behind
+     the navigation. */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--warm-white);
+  }
+
+  .hero__grid {
+    display: grid;
+    /* Deliberately unequal: the photograph is the anchor of the page. */
+    grid-template-columns: 45% 55%;
+    min-block-size: clamp(640px, 94vh, 1000px);
+  }
+
+  /* ------------------------------- text ------------------------------- */
+
+  .hero__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    padding-block: calc(var(--header-h) + 2.5rem) 3.5rem;
+    /* Start edge lines up with the site container (and so with the logo);
+       the end edge is padded hard so the block hugs the outer edge instead
+       of floating in the middle of its column. */
+    padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)))
+      clamp(1.5rem, 0.5rem + 3.5vw, 4.5rem);
+  }
+
+  .hero__text h1 {
+    line-height: 1.34;
+    margin-block-end: 1.75rem;
+  }
+
+  .hero__lead {
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.0938rem);
+    line-height: 1.85;
+    color: var(--stone-gray);
+    /* Short measure keeps the paragraph scannable at a glance. */
+    max-inline-size: 42ch;
+    margin-block-end: 2.5rem;
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  /* --------------------------- certifications -------------------------- */
+
+  .hero__certs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    margin-block-start: 2.75rem;
+    list-style: none;
+  }
+
+  .hero__cert {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    padding: 0.4375rem 0.875rem;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--stone-gray);
+    transition:
+      border-color 0.25s var(--ease),
+      color 0.25s var(--ease),
+      background-color 0.25s var(--ease);
+  }
+
+  .hero__cert :global(svg) {
+    color: var(--fresh-green);
+    flex-shrink: 0;
+  }
+
+  .hero__cert:hover {
+    border-color: var(--sage-green);
+    background: #fff;
+    color: var(--forest-green);
+  }
+
+  /* ------------------------------ visual ------------------------------ */
+
+  .hero__visual {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-muted);
+  }
+
+  .hero__slide {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 1.4s var(--ease);
+  }
+
+  .hero__slide.is-active {
+    opacity: 1;
+  }
+
+  .hero__slide :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    /* Crops the frame so the irrigation channel runs up the side nearest the
+       copy, leading the eye from the photograph into the headline. */
+    object-position: var(--focal, 30%) 52%;
+  }
+
+  .hero__slide.is-active :global(img) {
+    animation: ken-burns 9s var(--ease) forwards;
+  }
+
+  :global([dir='ltr']) .hero__slide :global(img) {
+    --focal: 70%;
+  }
+
+  /* Wide, eased dissolve into the copy area — no seam between the two
+     columns, so the hero reads as a single composition. */
+  .hero__visual::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: clamp(110px, 22%, 280px);
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(
+      to var(--fade-to, right),
+      var(--warm-white) 0%,
+      rgba(250, 250, 247, 0.94) 18%,
+      rgba(250, 250, 247, 0.72) 38%,
+      rgba(250, 250, 247, 0.38) 62%,
+      rgba(250, 250, 247, 0) 100%
+    );
+  }
+
+  :global([dir='rtl']) .hero__visual::after {
+    --fade-to: left;
+  }
+
+  /* ------------------------------- dots ------------------------------- */
+
+  .hero__dots {
+    position: absolute;
+    inset-block-end: 1.75rem;
+    inset-inline-end: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 5;
+  }
+
+  .hero__dot {
+    inline-size: 9px;
+    block-size: 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.28);
+    transition:
+      inline-size 0.4s var(--ease),
+      background-color 0.4s var(--ease);
+  }
+
+  .hero__dot:hover {
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .hero__dot.is-active {
+    inline-size: 30px;
+    background: #fff;
+  }
+
+  /* --------------------------- trust cards ---------------------------- */
+
+  /* The photograph is the second grid column, i.e. the inline-END side in both
+     directions — so the card layer is anchored there, not to inline-start. */
+  .hero__cards {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: 55%;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .hero__card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.6875rem;
+    padding: 0.8125rem 1.0625rem;
+    border-radius: var(--radius-md);
+    /* Light glass: legible over golden-hour photography, where white-on-photo
+       text would not be. */
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 30px rgba(27, 43, 20, 0.16);
+    pointer-events: auto;
+  }
+
+  /* Staggered down the outer edge of the frame, clear of its centre — the
+     irrigation channel and the workers stay unobstructed. */
+  .hero__card:nth-child(1) {
+    inset-block-start: 22%;
+    inset-inline-end: 7%;
+  }
+
+  .hero__card:nth-child(2) {
+    inset-block-start: 47%;
+    inset-inline-end: 16%;
+  }
+
+  .hero__card:nth-child(3) {
+    inset-block-start: 72%;
+    inset-inline-end: 6%;
+  }
+
+  .hero__card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 34px;
+    block-size: 34px;
+    border-radius: 50%;
+    background: var(--harvest-gold);
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .hero__card-body strong {
+    display: block;
+    font-size: 1.0625rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--forest-green);
+  }
+
+  .hero__card-body > span {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--soil-dark);
+    opacity: 0.78;
+    white-space: nowrap;
+  }
+
+  /* The drift runs on an inner wrapper concept: applying it to the card
+     itself would fight the entrance fade, so it starts once that finishes. */
+  .hero__card.is-settled {
+    animation: drift var(--drift, 9s) ease-in-out infinite;
+  }
+
+  /* --------------------------- breakpoints ---------------------------- */
+
+  @media (max-width: 1180px) {
+    .hero__card-body > span {
+      white-space: normal;
+    }
+
+    .hero__card:nth-child(2) {
+      inset-inline-end: 11%;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      min-block-size: 0;
+    }
+
+    .hero__visual {
+      order: -1;
+      block-size: clamp(320px, 56vw, 440px);
+    }
+
+    .hero__visual::after {
+      /* Horizontal feather makes no sense once the columns stack — fade the
+         bottom edge into the copy instead. */
+      inset: auto 0 0 0;
+      inline-size: auto;
+      block-size: 120px;
+      background: linear-gradient(to top, var(--warm-white), rgba(250, 250, 247, 0));
+    }
+
+    .hero__text {
+      padding-inline: var(--gutter);
+      padding-block: 1.75rem 3rem;
+    }
+
+    .hero__dots {
+      inset-inline-end: 50%;
+      transform: translateX(50%);
+    }
+
+    /* Cards leave the photograph and become a compact figures strip. */
+    .hero__cards {
+      position: static;
+      inline-size: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      padding-inline: var(--gutter);
+      padding-block-end: 3rem;
+    }
+
+    .hero__card {
+      position: static;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      background: var(--surface);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-sm);
+      animation: none !important;
+    }
+
+    .hero__card-body > span {
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .hero__cards {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__card {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__ctas {
+      gap: 0.875rem;
+    }
+
+    .hero__ctas .btn {
+      inline-size: 100%;
+    }
+  }
+</style>
+
+<script>
+  const slider = document.getElementById('hero-slider');
+  const cardWrap = document.getElementById('hero-cards');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ----------------------------- slideshow ----------------------------- */
+  if (slider) {
+    const slides = Array.from(slider.querySelectorAll<HTMLElement>('[data-slide]'));
+    const dots = Array.from(slider.querySelectorAll<HTMLButtonElement>('[data-dot]'));
+    const INTERVAL = 6000;
+
+    let current = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+
+    function goTo(index: number) {
+      slides[current]?.classList.remove('is-active');
+      dots[current]?.classList.remove('is-active');
+      dots[current]?.setAttribute('aria-selected', 'false');
+
+      current = (index + slides.length) % slides.length;
+
+      slides[current]?.classList.add('is-active');
+      dots[current]?.classList.add('is-active');
+      dots[current]?.setAttribute('aria-selected', 'true');
+    }
+
+    function start() {
+      if (reducedMotion.matches || slides.length < 2) return;
+      stop();
+      timer = setInterval(() => goTo(current + 1), INTERVAL);
+    }
+
+    function stop() {
+      if (timer) clearInterval(timer);
+      timer = undefined;
+    }
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        goTo(index);
+        start(); // restart the clock so the chosen slide gets a full turn
+      });
+    });
+
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+    slider.addEventListener('focusin', stop);
+    slider.addEventListener('focusout', start);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else start();
+    });
+
+    reducedMotion.addEventListener('change', () => (reducedMotion.matches ? stop() : start()));
+
+    start();
+  }
+
+  /* ------------------- floating cards: drift + parallax ----------------- */
+  if (cardWrap) {
+    const cards = Array.from(cardWrap.querySelectorAll<HTMLElement>('.hero__card'));
+
+    // Hand the cards over to the idle drift only after their entrance has
+    // finished, so the two animations never overlap.
+    cards.forEach((card) => {
+      card.addEventListener(
+        'animationend',
+        () => {
+          if (!reducedMotion.matches) card.classList.add('is-settled');
+        },
+        { once: true }
+      );
+    });
+
+    // Very shallow pointer parallax — enough to feel alive, not enough to notice.
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const desktop = window.matchMedia('(min-width: 901px)');
+
+    if (finePointer.matches && !reducedMotion.matches) {
+      let frame = 0;
+
+      window.addEventListener(
+        'pointermove',
+        (event) => {
+          if (!desktop.matches) return;
+          if (frame) return;
+
+          frame = requestAnimationFrame(() => {
+            frame = 0;
+            const relX = event.clientX / window.innerWidth - 0.5;
+            const relY = event.clientY / window.innerHeight - 0.5;
+
+            cards.forEach((card, index) => {
+              const depth = 6 + index * 3;
+              card.style.translate = `${(-relX * depth).toFixed(2)}px ${(-relY * depth).toFixed(2)}px`;
+            });
+          });
+        },
+        { passive: true }
+      );
+    }
+  }
+</script>

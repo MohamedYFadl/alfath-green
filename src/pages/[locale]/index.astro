@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/home/Hero.astro';
+import About from '../../components/home/About.astro';
+import Services from '../../components/home/Services.astro';
+import ProductsPreview from '../../components/home/ProductsPreview.astro';
+import Certificates from '../../components/home/Certificates.astro';
+import ContactCta from '../../components/home/ContactCta.astro';
+import { locales, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={t.seo.home.title}
+  description={t.seo.home.description}
+  transparentHeader
+>
+  <Hero locale={locale} />
+  <About locale={locale} />
+  <Services locale={locale} />
+  <ProductsPreview locale={locale} />
+  <Certificates locale={locale} />
+  <ContactCta locale={locale} />
+</BaseLayout>

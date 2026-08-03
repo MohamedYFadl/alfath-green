@@ -1,0 +1,156 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import defaultOgImage from '../assets/images/hero/hero-field.jpg';
+import { contact } from '../config/site';
+import {
+  direction,
+  htmlLang,
+  locales,
+  switchLocalePath,
+  useTranslations,
+  type Locale,
+} from '../i18n';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  /** Optional social-share image; falls back to the hero field shot. */
+  ogImage?: ImageMetadata;
+  /** Set on utility pages (404) that shouldn't be indexed. */
+  noindex?: boolean;
+  /**
+   * Lifts the header out of the flow and keeps it transparent until scroll.
+   * Only for pages whose first section is a full-bleed hero.
+   */
+  transparentHeader?: boolean;
+}
+
+const {
+  locale,
+  title,
+  description,
+  ogImage = defaultOgImage,
+  noindex = false,
+  transparentHeader = false,
+} = Astro.props;
+const t = useTranslations(locale);
+
+const site = Astro.site ?? new URL('https://alfathgreen.com');
+const canonical = new URL(Astro.url.pathname, site);
+const ogImageUrl = new URL(ogImage.src, site);
+
+/** hreflang alternates — every page links to its counterpart in all 3 languages. */
+const alternates = locales.map((loc) => ({
+  locale: loc,
+  hreflang: htmlLang[loc],
+  href: new URL(switchLocalePath(Astro.url, loc), site).href,
+}));
+
+/** x-default points at the Arabic version, which is the default locale. */
+const xDefault = new URL(switchLocalePath(Astro.url, 'ar'), site).href;
+
+const fontHref =
+  locale === 'ar'
+    ? 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap'
+    : 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap';
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: t.site.name,
+  alternateName: t.site.nameLatin,
+  description: t.seo.home.description,
+  url: site.href,
+  logo: new URL(ogImage.src, site).href,
+  email: contact.email,
+  telephone: contact.phone,
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'EG',
+    addressRegion: contact.address[locale],
+  },
+  slogan: t.site.slogan,
+};
+---
+
+<!doctype html>
+<html lang={htmlLang[locale]} dir={direction[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    {
+      alternates.map((alt) => (
+        <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.site.name} />
+    <meta property="og:locale" content={htmlLang[locale].replace('-', '_')} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImageUrl.href} />
+    <meta property="og:image:width" content={String(ogImage.width)} />
+    <meta property="og:image:height" content={String(ogImage.height)} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl.href} />
+
+    <!-- Fonts: only the script actually used on this page is fetched -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={fontHref} />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#1B5E20" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} is:inline />
+  </head>
+
+  <body class:list={{ 'has-hero': transparentHeader }}>
+    <a class="skip-link" href="#main">{t.nav.skipToContent}</a>
+    <Header locale={locale} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+
+    <script>
+      // Progressive enhancement: everything is visible without JS (see the
+      // prefers-reduced-motion rule in global.css), this only adds the fade-in.
+      const items = document.querySelectorAll('.reveal');
+
+      if (items.length) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        );
+
+        items.forEach((item) => observer.observe(item));
+      }
+    </script>
+  </body>
+</html>

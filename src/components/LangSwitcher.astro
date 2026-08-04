@@ -71,4 +71,12 @@ const fullLabels: Record<Locale, string> = {
     background: var(--fresh-green);
     color: #fff;
   }
+
+  /* Narrow phones: the switcher shares a very tight header row. */
+  @media (max-width: 520px) {
+    .lang-switch__item {
+      padding: 0.3125rem 0.5rem;
+      font-size: 0.75rem;
+    }
+  }
 </style>

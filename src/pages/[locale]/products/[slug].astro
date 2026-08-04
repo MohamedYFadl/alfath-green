@@ -1,0 +1,381 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import Icon from '../../../components/Icon.astro';
+import { contact, whatsappUrl } from '../../../config/site';
+import { localizePath, locales, useTranslations, type Locale } from '../../../i18n';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+
+  return locales.flatMap((locale) =>
+    products.map((product) => ({
+      params: { locale, slug: product.data.slug },
+      props: { product },
+    }))
+  );
+}
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const locale = Astro.params.locale as Locale;
+const { product } = Astro.props;
+const t = useTranslations(locale);
+const { data } = product;
+
+const name = data.name[locale];
+const description = data.description[locale];
+
+/** Falls back to the single card image when a product has no extra shots. */
+const gallery = data.gallery?.length ? data.gallery : [data.image];
+
+const related = (await getCollection('products'))
+  .filter((item) => item.data.slug !== data.slug && item.data.category === data.category)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+
+/** Pre-fills the product field on the contact form. */
+const quoteHref = `${localizePath('/contact', locale)}?product=${encodeURIComponent(name)}`;
+
+const specs = [
+  { label: t.products.specs.season, value: data.season[locale], icon: 'calendar' },
+  { label: t.products.specs.packaging, value: data.packaging[locale], icon: 'box' },
+  { label: t.products.specs.category, value: t.products.category[data.category], icon: 'tag' },
+] as const;
+
+const pageTitle = `${name} | ${t.site.name}`;
+const metaDescription = description.slice(0, 158);
+---
+
+<BaseLayout locale={locale} title={pageTitle} description={metaDescription} ogImage={data.image}>
+  <PageHeader
+    locale={locale}
+    eyebrow={t.products.category[data.category]}
+    title={name}
+    breadcrumb={[{ label: t.nav.products, href: localizePath('/products', locale) }]}
+  />
+
+  <section class="section">
+    <div class="container product-detail">
+      <div class="product-detail__media">
+        <figure class="gallery">
+          <div class="gallery__main" id="gallery-main">
+            {
+              gallery.map((image, index) => (
+                <Image
+                  src={image}
+                  alt={`${name} — ${index + 1}`}
+                  widths={[520, 780, 1040]}
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  class:list={['gallery__img', { 'is-active': index === 0 }]}
+                  data-gallery-slide={index}
+                />
+              ))
+            }
+          </div>
+
+          {
+            gallery.length > 1 && (
+              <div class="gallery__thumbs" role="group" aria-label={t.products.gallery}>
+                {gallery.map((image, index) => (
+                  <button
+                    type="button"
+                    class:list={['gallery__thumb', { 'is-active': index === 0 }]}
+                    data-gallery-thumb={index}
+                    aria-label={`${t.products.gallery} ${index + 1}`}
+                    aria-pressed={index === 0 ? 'true' : 'false'}
+                  >
+                    <Image src={image} alt="" widths={[120, 200]} sizes="100px" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            )
+          }
+        </figure>
+      </div>
+
+      <div class="product-detail__body">
+        {/* Name and category are already the <h1> and eyebrow of the page
+            header directly above — repeating them here just reads as a stutter. */}
+        <p class="product-detail__desc">{description}</p>
+
+        <h3 class="product-detail__specs-title">{t.products.specs.title}</h3>
+        <table class="specs">
+          <tbody>
+            {
+              specs.map((spec) => (
+                <tr>
+                  <th scope="row">
+                    <Icon name={spec.icon} size={17} />
+                    <span>{spec.label}</span>
+                  </th>
+                  <td>{spec.value}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+
+        <div class="quote-box">
+          <h3>{t.products.quoteTitle}</h3>
+          <p>{t.products.quoteText}</p>
+          <div class="quote-box__actions">
+            <a class="btn btn--primary" href={quoteHref}>
+              {t.actions.requestQuote}
+              <Icon name="arrow-right" size={18} class="icon-arrow" />
+            </a>
+            <a class="btn btn--outline" href={whatsappUrl} target="_blank" rel="noopener">
+              <Icon name="whatsapp" size={18} />
+              {t.contact.info.whatsapp}
+            </a>
+          </div>
+          <a class="quote-box__mail" href={`mailto:${contact.email}`} dir="ltr">{contact.email}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    related.length > 0 && (
+      <section class="section section--surface">
+        <div class="container">
+          <h2 class="related-title reveal">{t.products.related}</h2>
+          <div class="related-grid">
+            {related.map((item) => (
+              <ProductCard product={item} locale={locale} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .product-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 1.2rem + 3.5vw, 3.75rem);
+    align-items: start;
+  }
+
+  /* ----------------------------- gallery ------------------------------ */
+
+  .gallery {
+    margin: 0;
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + 1.5rem);
+  }
+
+  .gallery__main {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--surface-muted);
+    box-shadow: var(--shadow-md);
+  }
+
+  .gallery__img {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.45s var(--ease);
+  }
+
+  .gallery__img.is-active {
+    opacity: 1;
+  }
+
+  .gallery__thumbs {
+    display: flex;
+    gap: 0.625rem;
+    margin-block-start: 0.875rem;
+  }
+
+  .gallery__thumb {
+    inline-size: 84px;
+    block-size: 84px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 2px solid transparent;
+    padding: 0;
+    transition:
+      border-color 0.25s var(--ease),
+      opacity 0.25s var(--ease);
+    opacity: 0.65;
+  }
+
+  .gallery__thumb img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .gallery__thumb:hover {
+    opacity: 1;
+  }
+
+  .gallery__thumb.is-active {
+    border-color: var(--fresh-green);
+    opacity: 1;
+  }
+
+  /* ------------------------------ body -------------------------------- */
+
+  .product-detail__desc {
+    font-size: 1.0625rem;
+    color: var(--stone-gray);
+    max-inline-size: 60ch;
+  }
+
+  .product-detail__specs-title {
+    margin-block: 2rem 1rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    padding-block-end: 0.625rem;
+    border-block-end: 2px solid var(--harvest-gold);
+    display: inline-block;
+  }
+
+  .specs {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .specs tr {
+    border-block-end: 1px solid var(--border-light);
+  }
+
+  .specs tr:last-child {
+    border-block-end: none;
+  }
+
+  .specs th {
+    text-align: start;
+    vertical-align: top;
+    padding-block: 0.875rem;
+    padding-inline-end: 1.25rem;
+    inline-size: 36%;
+    font-weight: 600;
+    color: var(--forest-green);
+    white-space: nowrap;
+  }
+
+  .specs th :global(svg) {
+    color: var(--sage-green);
+    vertical-align: -3px;
+    margin-inline-end: 0.4375rem;
+  }
+
+  .specs td {
+    padding-block: 0.875rem;
+    color: var(--stone-gray);
+    line-height: 1.7;
+  }
+
+  /* ---------------------------- quote box ------------------------------ */
+
+  .quote-box {
+    margin-block-start: 2.5rem;
+    padding: clamp(1.375rem, 1rem + 1.4vw, 1.875rem);
+    border-radius: var(--radius-lg);
+    background: var(--surface-muted);
+    border: 1px solid var(--border-light);
+  }
+
+  .quote-box h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .quote-box p {
+    margin-block: 0.5rem 1.25rem;
+    font-size: 0.9375rem;
+    color: var(--stone-gray);
+  }
+
+  .quote-box__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .quote-box__mail {
+    display: inline-block;
+    margin-block-start: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--stone-gray);
+  }
+
+  .quote-box__mail:hover {
+    color: var(--forest-green);
+  }
+
+  /* ----------------------------- related ------------------------------- */
+
+  .related-title {
+    margin-block-end: 1.75rem;
+    font-size: 1.375rem;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.375rem;
+  }
+
+  @media (max-width: 900px) {
+    .product-detail {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery {
+      position: static;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<script>
+  const slides = Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-slide]'));
+  const thumbs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gallery-thumb]'));
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const index = thumb.dataset.galleryThumb;
+
+      slides.forEach((slide) =>
+        slide.classList.toggle('is-active', slide.dataset.gallerySlide === index)
+      );
+
+      thumbs.forEach((other) => {
+        const active = other === thumb;
+        other.classList.toggle('is-active', active);
+        other.setAttribute('aria-pressed', String(active));
+      });
+    });
+  });
+</script>

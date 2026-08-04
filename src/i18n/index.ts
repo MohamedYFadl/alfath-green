@@ -60,7 +60,14 @@ export function localizePath(path: string, locale: Locale): string {
  */
 export function switchLocalePath(url: URL, target: Locale): string {
   const segments = url.pathname.split('/').filter(Boolean);
-  if (isLocale(segments[0])) segments.shift();
+
+  // Paths that carry no locale prefix (/404.html, and anything a static host
+  // serves outside the locale tree) have no counterpart to map onto. Sending
+  // the visitor to that locale's home page is the only link that is certain
+  // to exist — building `/en/404.html/` would just 404 again.
+  if (!isLocale(segments[0])) return localizePath('/', target);
+
+  segments.shift();
   return localizePath(segments.join('/'), target);
 }
 

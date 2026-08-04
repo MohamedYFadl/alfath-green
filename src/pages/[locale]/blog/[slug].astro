@@ -1,0 +1,283 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { marked } from 'marked';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import Icon from '../../../components/Icon.astro';
+import {
+  formatDate,
+  htmlLang,
+  localizePath,
+  locales,
+  useTranslations,
+  type Locale,
+} from '../../../i18n';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+
+  return locales.flatMap((locale) =>
+    posts.map((post) => ({
+      params: { locale, slug: post.data.slug },
+      props: { post },
+    }))
+  );
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const locale = Astro.params.locale as Locale;
+const { post } = Astro.props;
+const t = useTranslations(locale);
+const { data } = post;
+
+const title = data.title[locale];
+const excerpt = data.excerpt[locale];
+const source = data.content[locale];
+
+/** Content is authored in-repo, so the markdown source is trusted. */
+const body = marked.parse(source, { gfm: true, async: false }) as string;
+
+/** Rough reading time from the source text, not the rendered markup. */
+const words = source.replace(/[#*_>\-`[\]()]/g, ' ').split(/\s+/).filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.round(words / 200));
+
+const others = (await getCollection('blog'))
+  .filter((item) => item.data.slug !== data.slug)
+  .sort((a, b) => Date.parse(b.data.publishDate) - Date.parse(a.data.publishDate))
+  .slice(0, 3);
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: excerpt,
+  datePublished: data.publishDate,
+  inLanguage: htmlLang[locale],
+  author: { '@type': 'Organization', name: t.site.name },
+  publisher: { '@type': 'Organization', name: t.site.name },
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${title} | ${t.site.name}`}
+  description={excerpt}
+  ogImage={data.coverImage}
+>
+  <article class="post">
+    <header class="post__header">
+      <div class="container post__header-inner">
+        <a class="post__back" href={localizePath('/blog', locale)}>
+          <Icon name="arrow-right" size={16} class="icon-arrow post__back-icon" />
+          {t.actions.backToBlog}
+        </a>
+
+        <p class="eyebrow">{t.blog.eyebrow}</p>
+        <h1>{title}</h1>
+
+        <div class="post__meta">
+          <span>
+            <Icon name="calendar" size={16} />
+            <time datetime={data.publishDate}>{formatDate(data.publishDate, locale)}</time>
+          </span>
+          <span>
+            <Icon name="clock" size={16} />
+            {readingMinutes} {t.blog.readingTime}
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <figure class="post__cover">
+        <Image
+          src={data.coverImage}
+          alt={title}
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 820px) 100vw, 820px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+
+      <div class="post__body prose" set:html={body} />
+    </div>
+  </article>
+
+  {
+    others.length > 0 && (
+      <section class="section section--surface">
+        <div class="container">
+          <h2 class="more-title reveal">{t.blog.more}</h2>
+          <div class="more-grid">
+            {others.map((item) => (
+              <BlogCard post={item} locale={locale} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} is:inline />
+</BaseLayout>
+
+<style>
+  .post__header {
+    padding-block: clamp(2rem, 1.4rem + 2.4vw, 3rem) clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgba(124, 179, 66, 0.12), transparent 60%),
+      var(--warm-white);
+  }
+
+  .post__header-inner {
+    max-inline-size: 820px;
+  }
+
+  .post__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    margin-block-end: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--stone-gray);
+    transition: color 0.2s var(--ease);
+  }
+
+  .post__back:hover {
+    color: var(--forest-green);
+  }
+
+  /* The arrow points forward by default; flip it into a "back" direction. */
+  .post__back :global(.post__back-icon) {
+    scale: -1 1;
+  }
+
+  :global([dir='rtl']) .post__back :global(.post__back-icon) {
+    scale: 1 1;
+  }
+
+  .post__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-block-start: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--stone-gray);
+  }
+
+  .post__meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+  }
+
+  .post__meta :global(svg) {
+    color: var(--sage-green);
+  }
+
+  .post__cover {
+    max-inline-size: 820px;
+    margin: 0 auto;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .post__cover :global(img) {
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .post__body {
+    max-inline-size: 820px;
+    margin-inline: auto;
+    padding-block: clamp(2rem, 1.4rem + 2.4vw, 3rem) var(--section-y);
+  }
+
+  /* ------------------------------ prose ------------------------------- */
+
+  .prose :global(h2) {
+    margin-block: 2.25rem 0.875rem;
+    font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.625rem);
+  }
+
+  .prose :global(h3) {
+    margin-block: 1.75rem 0.75rem;
+  }
+
+  .prose :global(p) {
+    margin-block-end: 1.25rem;
+    color: var(--soil-dark);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-block-end: 1.25rem;
+    padding-inline-start: 1.375rem;
+  }
+
+  .prose :global(li) {
+    margin-block-end: 0.5rem;
+  }
+
+  .prose :global(li::marker) {
+    color: var(--sage-green);
+    font-weight: 700;
+  }
+
+  .prose :global(strong) {
+    color: var(--forest-green);
+    font-weight: 700;
+  }
+
+  .prose :global(a) {
+    color: var(--fresh-green);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(blockquote) {
+    margin-block: 1.75rem;
+    padding-inline-start: 1.25rem;
+    border-inline-start: 3px solid var(--harvest-gold);
+    color: var(--stone-gray);
+    font-style: italic;
+  }
+
+  .prose :global(img) {
+    border-radius: var(--radius-lg);
+    margin-block: 1.75rem;
+  }
+
+  /* ------------------------------ more -------------------------------- */
+
+  .more-title {
+    margin-block-end: 1.75rem;
+    font-size: 1.375rem;
+  }
+
+  .more-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 1000px) {
+    .more-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 680px) {
+    .more-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

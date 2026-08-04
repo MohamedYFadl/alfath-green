@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NotFound from '../components/NotFound.astro';
+import { defaultLocale, useTranslations } from '../i18n';
+
+/**
+ * Fallback error page for URLs outside the locale tree (e.g. /nonsense), and
+ * the safety net if a host does not honour the per-locale `ErrorDocument`
+ * rules in .htaccess. It cannot know the visitor's language, so it answers in
+ * the default locale and offers all three explicitly.
+ */
+const locale = defaultLocale;
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${t.seo.notFound.title} | ${t.site.name}`}
+  description={t.seo.notFound.description}
+  noindex
+>
+  <NotFound locale={locale} showLanguages />
+</BaseLayout>
+
+<script>
+  /**
+   * If the host fell back to this shared page for a URL that *does* carry a
+   * locale prefix, swap in that locale's error page so the visitor is not
+   * answered in the wrong language. Guarded against looping on itself.
+   */
+  const [, prefix] = window.location.pathname.split('/');
+
+  if ((prefix === 'en' || prefix === 'fr') && !window.location.pathname.includes('/404')) {
+    window.location.replace(`/${prefix}/404/`);
+  }
+</script>

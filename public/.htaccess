@@ -22,7 +22,21 @@
 </IfModule>
 
 # --- Custom 404 --------------------------------------------------------------
-ErrorDocument 404 /ar/404/index.html
+# Answer in the language of the URL that was requested. <If> is Apache 2.4 core
+# and needs the same AllowOverride FileInfo that ErrorDocument already requires.
+# If a host ignores these blocks, the default below still serves, and the small
+# script in 404.html forwards to the matching locale.
+ErrorDocument 404 /404.html
+
+<If "%{REQUEST_URI} =~ m#^/ar/#">
+  ErrorDocument 404 /ar/404/index.html
+</If>
+<ElseIf "%{REQUEST_URI} =~ m#^/en/#">
+  ErrorDocument 404 /en/404/index.html
+</ElseIf>
+<ElseIf "%{REQUEST_URI} =~ m#^/fr/#">
+  ErrorDocument 404 /fr/404/index.html
+</ElseIf>
 
 # --- Compression -------------------------------------------------------------
 <IfModule mod_deflate.c>

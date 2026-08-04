@@ -1,0 +1,98 @@
+---
+import Icon from './Icon.astro';
+import { localizePath, locales, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Offer the other two languages — useful on the shared root error page. */
+  showLanguages?: boolean;
+}
+
+const { locale, showLanguages = false } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="section notfound">
+  <div class="container">
+    <p class="notfound__code" dir="ltr">404</p>
+    <h1>{t.notFound.title}</h1>
+    <p class="notfound__text">{t.notFound.text}</p>
+
+    <div class="notfound__actions">
+      <a class="btn btn--primary btn--lg" href={localizePath('/', locale)}>
+        {t.notFound.button}
+        <Icon name="arrow-right" size={18} class="icon-arrow" />
+      </a>
+      <a class="btn btn--outline btn--lg" href={localizePath('/products', locale)}>
+        {t.nav.products}
+      </a>
+    </div>
+
+    {
+      showLanguages && (
+        <ul class="notfound__langs" role="list">
+          {locales.map((loc) => {
+            const dict = useTranslations(loc);
+            return (
+              <li>
+                <a href={localizePath('/', loc)} hreflang={loc} lang={loc}>
+                  {dict.language[loc]}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .notfound {
+    text-align: center;
+    padding-block: clamp(4rem, 3rem + 6vw, 7rem);
+  }
+
+  .notfound__code {
+    font-size: clamp(4rem, 3rem + 8vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--sage-green);
+    opacity: 0.35;
+    margin-block-end: 0.5rem;
+  }
+
+  .notfound__text {
+    max-inline-size: 46ch;
+    margin: 1rem auto 2rem;
+    color: var(--stone-gray);
+  }
+
+  .notfound__actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .notfound__langs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-block-start: 2.5rem;
+    padding-block-start: 1.75rem;
+    border-block-start: 1px solid var(--border-light);
+    list-style: none;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .notfound__langs a {
+    color: var(--stone-gray);
+  }
+
+  .notfound__langs a:hover {
+    color: var(--forest-green);
+  }
+</style>

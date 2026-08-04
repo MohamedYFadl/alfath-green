@@ -98,7 +98,7 @@ const cardIcons = ['globe', 'ship', 'star'] as const;
   <div class="hero__cards" id="hero-cards">
     {
       hero.cards.map((card, index) => (
-        <div class="hero__card anim-in" style={`--delay:${0.6 + index * 0.12}s;--drift:${8 + index * 1.4}s`}>
+        <div class="hero__card" style={`--delay:${0.6 + index * 0.12}s;--drift:${8 + index * 1.4}s`}>
           <span class="hero__card-icon">
             <Icon name={cardIcons[index]} size={18} />
           </span>
@@ -325,6 +325,15 @@ const cardIcons = ['globe', 'ship', 'star'] as const;
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 10px 30px rgba(27, 43, 20, 0.16);
     pointer-events: auto;
+
+    /* Both animations run together rather than one replacing the other.
+       They touch different properties (opacity vs transform), and the drift
+       simply starts after the fade has finished. Swapping the animation on a
+       class change would drop `forwards` and snap opacity back to 0. */
+    opacity: 0;
+    animation:
+      fade-in 0.9s var(--ease) var(--delay, 0s) forwards,
+      drift var(--drift, 9s) ease-in-out calc(var(--delay, 0s) + 0.9s) infinite;
   }
 
   /* Staggered down the outer edge of the frame, clear of its centre — the
@@ -371,12 +380,6 @@ const cardIcons = ['globe', 'ship', 'star'] as const;
     color: var(--soil-dark);
     opacity: 0.78;
     white-space: nowrap;
-  }
-
-  /* The drift runs on an inner wrapper concept: applying it to the card
-     itself would fight the entrance fade, so it starts once that finishes. */
-  .hero__card.is-settled {
-    animation: drift var(--drift, 9s) ease-in-out infinite;
   }
 
   /* --------------------------- breakpoints ---------------------------- */
@@ -535,19 +538,9 @@ const cardIcons = ['globe', 'ship', 'star'] as const;
   if (cardWrap) {
     const cards = Array.from(cardWrap.querySelectorAll<HTMLElement>('.hero__card'));
 
-    // Hand the cards over to the idle drift only after their entrance has
-    // finished, so the two animations never overlap.
-    cards.forEach((card) => {
-      card.addEventListener(
-        'animationend',
-        () => {
-          if (!reducedMotion.matches) card.classList.add('is-settled');
-        },
-        { once: true }
-      );
-    });
-
-    // Very shallow pointer parallax — enough to feel alive, not enough to notice.
+    // Entrance fade and idle drift are both handled in CSS. This only adds the
+    // very shallow pointer parallax — it writes `translate`, which composes
+    // with the drift's `transform` instead of fighting it.
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     const desktop = window.matchMedia('(min-width: 901px)');
 

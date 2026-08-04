@@ -1,0 +1,187 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import { locales, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+
+const filters = [
+  { value: 'all', label: t.products.filters.all },
+  { value: 'fruits', label: t.products.filters.fruits },
+  { value: 'vegetables', label: t.products.filters.vegetables },
+] as const;
+---
+
+<BaseLayout locale={locale} title={t.seo.products.title} description={t.seo.products.description}>
+  <PageHeader
+    locale={locale}
+    eyebrow={t.products.eyebrow}
+    title={t.products.title}
+    sub={t.products.sub}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="filter-bar">
+        <div class="filter-bar__group" role="group" aria-label={t.products.filterLabel}>
+          {
+            filters.map((filter, index) => (
+              <button
+                type="button"
+                class:list={['filter-chip', { 'is-active': index === 0 }]}
+                data-filter={filter.value}
+                aria-pressed={index === 0 ? 'true' : 'false'}
+              >
+                {filter.label}
+              </button>
+            ))
+          }
+        </div>
+
+        <p class="filter-bar__count" aria-live="polite">
+          <span id="product-count">{products.length}</span>
+          {' '}{t.products.count}
+        </p>
+      </div>
+
+      <div class="products-grid" id="products-grid">
+        {products.map((product) => <ProductCard product={product} locale={locale} />)}
+      </div>
+
+      <p class="products-empty" id="products-empty" hidden>{t.products.empty}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-block-end: 2.25rem;
+    padding-block-end: 1.25rem;
+    border-block-end: 1px solid var(--border-light);
+  }
+
+  .filter-bar__group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .filter-chip {
+    padding: 0.5625rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-light);
+    background: var(--surface);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--stone-gray);
+    transition:
+      background-color 0.25s var(--ease),
+      border-color 0.25s var(--ease),
+      color 0.25s var(--ease);
+  }
+
+  .filter-chip:hover {
+    border-color: var(--sage-green);
+    color: var(--forest-green);
+  }
+
+  .filter-chip.is-active {
+    background: var(--fresh-green);
+    border-color: var(--fresh-green);
+    color: #fff;
+  }
+
+  .filter-bar__count {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--stone-gray);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.375rem;
+  }
+
+  /* Filtering hides cards rather than removing them, so no layout thrash
+     and no re-running of the reveal observer. */
+  .products-grid :global(.product-card.is-filtered-out) {
+    display: none;
+  }
+
+  .products-empty {
+    padding-block: 3rem;
+    text-align: center;
+    color: var(--stone-gray);
+  }
+
+  .products-empty[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 1000px) {
+    .products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<script>
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.product-card'));
+  const count = document.getElementById('product-count');
+  const empty = document.getElementById('products-empty');
+
+  function apply(filter: string) {
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const match = filter === 'all' || card.dataset.category === filter;
+      card.classList.toggle('is-filtered-out', !match);
+      if (match) visible++;
+    });
+
+    if (count) count.textContent = String(visible);
+    if (empty) empty.hidden = visible > 0;
+
+    chips.forEach((chip) => {
+      const active = chip.dataset.filter === filter;
+      chip.classList.toggle('is-active', active);
+      chip.setAttribute('aria-pressed', String(active));
+    });
+
+    // Keep the choice in the URL so it survives a refresh and can be linked to.
+    const url = new URL(window.location.href);
+    if (filter === 'all') url.searchParams.delete('category');
+    else url.searchParams.set('category', filter);
+    history.replaceState(null, '', url);
+  }
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => apply(chip.dataset.filter ?? 'all'));
+  });
+
+  // Honour ?category=fruits on first load.
+  const initial = new URL(window.location.href).searchParams.get('category');
+  if (initial && chips.some((chip) => chip.dataset.filter === initial)) apply(initial);
+</script>

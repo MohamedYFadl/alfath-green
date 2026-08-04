@@ -1,0 +1,573 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Icon from '../../components/Icon.astro';
+import mapPlaceholder from '../../assets/images/map-placeholder.jpg';
+import { contact, social, whatsappUrl } from '../../config/site';
+import { locales, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+const form = t.contact.form;
+
+/**
+ * Read at build time so the page can warn loudly when the form is not wired up
+ * yet, rather than failing silently on the visitor's first submission.
+ */
+const emailjsConfigured = Boolean(
+  import.meta.env.PUBLIC_EMAILJS_SERVICE_ID &&
+    import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID &&
+    import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY
+);
+
+const infoRows = [
+  {
+    icon: 'phone',
+    label: t.contact.info.phone,
+    value: contact.phone,
+    href: `tel:${contact.phone.replace(/\s/g, '')}`,
+    ltr: true,
+  },
+  {
+    icon: 'whatsapp',
+    label: t.contact.info.whatsapp,
+    value: contact.phone,
+    href: whatsappUrl,
+    ltr: true,
+  },
+  {
+    icon: 'mail',
+    label: t.contact.info.email,
+    value: contact.email,
+    href: `mailto:${contact.email}`,
+    ltr: true,
+  },
+  {
+    icon: 'map-pin',
+    label: t.contact.info.address,
+    value: contact.address[locale],
+    href: undefined,
+    ltr: false,
+  },
+  {
+    icon: 'clock',
+    label: t.contact.info.hours,
+    value: t.contact.info.hoursValue,
+    href: undefined,
+    ltr: false,
+  },
+] as const;
+---
+
+<BaseLayout locale={locale} title={t.seo.contact.title} description={t.seo.contact.description}>
+  <PageHeader
+    locale={locale}
+    eyebrow={t.contact.eyebrow}
+    title={t.contact.title}
+    sub={t.contact.sub}
+  />
+
+  <section class="section">
+    <div class="container contact-grid">
+      <!-- ------------------------------ form ------------------------------ -->
+      <div class="contact-form-wrap">
+        <h2 class="contact-form-title">{form.title}</h2>
+
+        {
+          !emailjsConfigured && (
+            <p class="config-warning">
+              <Icon name="shield" size={17} />
+              <span>{form.notConfigured}</span>
+            </p>
+          )
+        }
+
+        <form
+          id="contact-form"
+          class="contact-form"
+          novalidate
+          data-msg-required={form.required}
+          data-msg-email={form.invalidEmail}
+          data-msg-success={form.success}
+          data-msg-error={form.error}
+          data-msg-unconfigured={form.notConfigured}
+          data-label-send={t.actions.send}
+          data-label-sending={t.actions.sending}
+        >
+          <div class="form-row">
+            <div class="field">
+              <label for="field-name">{form.name} <span aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="field-name"
+                name="from_name"
+                placeholder={form.namePlaceholder}
+                autocomplete="name"
+                required
+              />
+              <p class="error-text" data-error-for="field-name" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="field-email">{form.email} <span aria-hidden="true">*</span></label>
+              <input
+                type="email"
+                id="field-email"
+                name="from_email"
+                placeholder={form.emailPlaceholder}
+                autocomplete="email"
+                dir="ltr"
+                required
+              />
+              <p class="error-text" data-error-for="field-email" hidden></p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="field-company">{form.company}</label>
+              <input
+                type="text"
+                id="field-company"
+                name="company"
+                placeholder={form.companyPlaceholder}
+                autocomplete="organization"
+              />
+            </div>
+
+            <div class="field">
+              <label for="field-country">{form.country} <span aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="field-country"
+                name="country"
+                placeholder={form.countryPlaceholder}
+                autocomplete="country-name"
+                required
+              />
+              <p class="error-text" data-error-for="field-country" hidden></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="field-product">{form.product}</label>
+            <input
+              type="text"
+              id="field-product"
+              name="product"
+              placeholder={form.productPlaceholder}
+            />
+          </div>
+
+          <div class="field">
+            <label for="field-message">{form.message} <span aria-hidden="true">*</span></label>
+            <textarea
+              id="field-message"
+              name="message"
+              placeholder={form.messagePlaceholder}
+              required></textarea>
+            <p class="error-text" data-error-for="field-message" hidden></p>
+          </div>
+
+          {/* Honeypot: invisible to people, irresistible to bots. */}
+          <div class="hp" aria-hidden="true">
+            <label for="field-website">Website</label>
+            <input type="text" id="field-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--lg" id="contact-submit">
+            {t.actions.send}
+            <Icon name="arrow-right" size={18} class="icon-arrow" />
+          </button>
+
+          <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
+        </form>
+      </div>
+
+      <!-- ------------------------------ info ------------------------------ -->
+      <aside class="contact-info">
+        <h2 class="contact-info__title">{t.contact.info.title}</h2>
+
+        <ul role="list" class="info-list">
+          {
+            infoRows.map((row) => (
+              <li class="info-row">
+                <span class="info-row__icon">
+                  <Icon name={row.icon} size={19} />
+                </span>
+                <span class="info-row__text">
+                  <strong>{row.label}</strong>
+                  {row.href ? (
+                    <a
+                      href={row.href}
+                      dir={row.ltr ? 'ltr' : undefined}
+                      target={row.href.startsWith('http') ? '_blank' : undefined}
+                      rel={row.href.startsWith('http') ? 'noopener' : undefined}
+                    >
+                      {row.value}
+                    </a>
+                  ) : (
+                    <span>{row.value}</span>
+                  )}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <ul role="list" class="info-social">
+          {
+            social.map((item) => (
+              <li>
+                <a href={item.href} target="_blank" rel="noopener" aria-label={item.name}>
+                  <Icon name={item.icon} size={18} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <figure class="map-box">
+          <Image src={mapPlaceholder} alt={t.contact.mapAlt} widths={[400, 700]} sizes="420px" />
+          <figcaption>{t.contact.mapPlaceholder}</figcaption>
+        </figure>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 1.2rem + 3.5vw, 3.75rem);
+    align-items: start;
+  }
+
+  /* ------------------------------- form ------------------------------- */
+
+  .contact-form-title,
+  .contact-info__title {
+    font-size: 1.375rem;
+    margin-block-end: 1.5rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.125rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.125rem;
+  }
+
+  .contact-form button[type='submit'] {
+    align-self: flex-start;
+    margin-block-start: 0.375rem;
+  }
+
+  .config-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    margin-block-end: 1.5rem;
+    padding: 0.875rem 1.125rem;
+    border-radius: var(--radius-sm);
+    background: rgba(201, 150, 44, 0.1);
+    border: 1px solid rgba(201, 150, 44, 0.35);
+    font-size: 0.875rem;
+    color: #7a5712;
+  }
+
+  .config-warning :global(svg) {
+    flex-shrink: 0;
+    margin-block-start: 2px;
+  }
+
+  /* Off-screen rather than display:none — bots skip hidden inputs. */
+  .hp {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .form-status {
+    padding: 0.875rem 1.125rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .form-status[hidden] {
+    display: none;
+  }
+
+  .form-status.is-success {
+    background: rgba(76, 175, 80, 0.12);
+    border: 1px solid rgba(76, 175, 80, 0.4);
+    color: var(--forest-green);
+  }
+
+  .form-status.is-error {
+    background: rgba(179, 38, 30, 0.08);
+    border: 1px solid rgba(179, 38, 30, 0.3);
+    color: #8c1d18;
+  }
+
+  .field input[aria-invalid='true'],
+  .field textarea[aria-invalid='true'] {
+    border-color: #b3261e;
+  }
+
+  .error-text[hidden] {
+    display: none;
+  }
+
+  /* ------------------------------- info ------------------------------- */
+
+  .contact-info {
+    padding: clamp(1.5rem, 1.1rem + 1.6vw, 2rem);
+    border-radius: var(--radius-lg);
+    background: var(--surface-muted);
+    border: 1px solid var(--border-light);
+  }
+
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    list-style: none;
+  }
+
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+  }
+
+  .info-row__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    color: var(--forest-green);
+    flex-shrink: 0;
+  }
+
+  .info-row__text strong {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--forest-green);
+    margin-block-end: 2px;
+  }
+
+  .info-row__text a,
+  .info-row__text > span {
+    font-size: 0.9375rem;
+    color: var(--stone-gray);
+    line-height: 1.6;
+  }
+
+  .info-row__text a:hover {
+    color: var(--fresh-green);
+  }
+
+  .info-social {
+    display: flex;
+    gap: 0.625rem;
+    list-style: none;
+    margin-block-start: 1.75rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--border-light);
+  }
+
+  .info-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 40px;
+    block-size: 40px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    color: var(--stone-gray);
+    transition:
+      background-color 0.25s var(--ease),
+      color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+
+  .info-social a:hover {
+    background: var(--fresh-green);
+    border-color: var(--fresh-green);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .map-box {
+    margin: 1.75rem 0 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+    background: var(--surface);
+  }
+
+  .map-box :global(img) {
+    inline-size: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    filter: grayscale(0.35);
+  }
+
+  .map-box figcaption {
+    padding: 0.6875rem 0.875rem;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--stone-gray);
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-form button[type='submit'] {
+      inline-size: 100%;
+    }
+  }
+</style>
+
+<script>
+  import emailjs from '@emailjs/browser';
+
+  const SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
+  const TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
+  const PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submit = document.getElementById('contact-submit') as HTMLButtonElement | null;
+  const status = document.getElementById('form-status');
+
+  if (form && submit && status) {
+    const msg = form.dataset;
+
+    /* --- pre-fill the product field from ?product= on the quote CTA ------ */
+    const requested = new URL(window.location.href).searchParams.get('product');
+    if (requested) {
+      const field = form.elements.namedItem('product') as HTMLInputElement | null;
+      if (field) field.value = requested;
+    }
+
+    /* ---------------------------- validation ---------------------------- */
+    const showError = (field: HTMLInputElement | HTMLTextAreaElement, message: string | null) => {
+      const hint = form.querySelector<HTMLElement>(`[data-error-for="${field.id}"]`);
+      field.setAttribute('aria-invalid', message ? 'true' : 'false');
+      if (hint) {
+        hint.textContent = message ?? '';
+        hint.hidden = !message;
+      }
+    };
+
+    const validate = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      const value = field.value.trim();
+
+      if (field.required && !value) {
+        showError(field, msg.msgRequired ?? '');
+        return false;
+      }
+
+      if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+        showError(field, msg.msgEmail ?? '');
+        return false;
+      }
+
+      showError(field, null);
+      return true;
+    };
+
+    const fields = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[required], textarea[required]')
+    );
+
+    // Only nag after the field has been touched once.
+    fields.forEach((field) => {
+      field.addEventListener('blur', () => validate(field));
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') validate(field);
+      });
+    });
+
+    const setStatus = (text: string, kind: 'success' | 'error') => {
+      status.textContent = text;
+      status.classList.toggle('is-success', kind === 'success');
+      status.classList.toggle('is-error', kind === 'error');
+      status.hidden = false;
+    };
+
+    /* ----------------------------- submit ------------------------------- */
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.hidden = true;
+
+      // Validate every required field, then focus the first offender.
+      const invalid = fields.filter((field) => !validate(field));
+      if (invalid.length) {
+        invalid[0].focus();
+        return;
+      }
+
+      // Honeypot tripped — pretend everything is fine and drop it.
+      const honeypot = form.elements.namedItem('website') as HTMLInputElement | null;
+      if (honeypot?.value) {
+        setStatus(msg.msgSuccess ?? '', 'success');
+        form.reset();
+        return;
+      }
+
+      if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+        setStatus(msg.msgUnconfigured ?? '', 'error');
+        return;
+      }
+
+      submit.disabled = true;
+      const original = submit.childNodes[0];
+      if (original) original.textContent = `${msg.labelSending} `;
+
+      try {
+        await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY });
+        setStatus(msg.msgSuccess ?? '', 'success');
+        form.reset();
+        fields.forEach((field) => showError(field, null));
+      } catch (error) {
+        console.error('[contact] EmailJS send failed:', error);
+        setStatus(msg.msgError ?? '', 'error');
+      } finally {
+        submit.disabled = false;
+        if (original) original.textContent = `${msg.labelSend} `;
+      }
+    });
+  }
+</script>

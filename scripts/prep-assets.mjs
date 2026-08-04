@@ -5,8 +5,10 @@ import path from 'node:path';
 const SRC = 'T:/Mohamed/Freelance/alfath -green';
 const PROJ = 'T:/Mohamed/Freelance/alfath -green/project';
 const IMG = path.join(PROJ, 'src/assets/images');
+const BAN = path.join(PROJ, 'src/assets/banners');
 const PUB = path.join(PROJ, 'public');
 
+await mkdir(BAN, { recursive: true });
 await mkdir(path.join(IMG, 'hero'), { recursive: true });
 await mkdir(path.join(IMG, 'products'), { recursive: true });
 await mkdir(path.join(IMG, 'blog'), { recursive: true });
@@ -106,6 +108,21 @@ await cover('when to harvest.avif', 'blog/harvest-timing.jpg');
 await cover('field.png', 'blog/nile-soil.jpg');
 await cover('Export.png', 'blog/cold-chain.jpg');
 await cover('Packing.png', 'blog/packing-standards.jpg');
+
+// ---------- page banners ----------------------------------------------------
+// Purpose-shot wide artwork from the client. Native framing is preserved —
+// the banner component crops with object-fit, so no fixed crop here.
+async function banner(src, out) {
+  await sharp(path.join(SRC, src))
+    .resize({ width: 1920, withoutEnlargement: true })
+    .jpeg(jpg(82))
+    .toFile(path.join(BAN, out));
+  console.log('banner', out);
+}
+
+await banner('Products-banner.png', 'products.jpg');
+await banner('Blog-banner.png', 'blog.jpg');
+await banner("Contact-banner'.png", 'contact.jpg');
 
 // ---------- brand ----------
 // full logo, trimmed of white border, kept on transparent

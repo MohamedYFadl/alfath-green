@@ -1,0 +1,180 @@
+---
+import { Image } from 'astro:assets';
+
+interface Crumb {
+  label: string;
+  /** Omit on the final item — that is the current page. */
+  href?: string;
+}
+
+interface Props {
+  /** Already resolved to the current language by the caller. */
+  title: string;
+  image: ImageMetadata;
+  breadcrumbs: Crumb[];
+  /** Optional supporting line, kept from the previous text-only headers. */
+  sub?: string;
+}
+
+const { title, image, breadcrumbs, sub } = Astro.props;
+---
+
+<section class="page-banner">
+  {/* Decorative: the heading carries the meaning, so the alt stays empty. */}
+  <Image
+    src={image}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="page-banner__image"
+  />
+
+  <div class="page-banner__overlay" aria-hidden="true"></div>
+
+  <div class="container page-banner__inner">
+    <h1>{title}</h1>
+    {sub && <p class="page-banner__sub">{sub}</p>}
+
+    <nav class="page-banner__crumbs" aria-label="Breadcrumb">
+      <ol role="list">
+        {
+          breadcrumbs.map((crumb, index) => (
+            <li>
+              {/* "/" is direction-agnostic, so nothing needs mirroring in RTL. */}
+              {index > 0 && <span class="page-banner__sep" aria-hidden="true">/</span>}
+              {crumb.href ? (
+                <a href={crumb.href}>{crumb.label}</a>
+              ) : (
+                <span aria-current="page">{crumb.label}</span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<style>
+  .page-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* Tuned so the band lands on ~220px at 375px and ~360px at 1440px. */
+    min-block-size: clamp(220px, 10.7rem + 13.1vw, 380px);
+    overflow: hidden;
+    background: var(--forest-green);
+    isolation: isolate;
+  }
+
+  .page-banner__image {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+    z-index: -2;
+  }
+
+  /*
+   * The overlay colour is derived from the --forest-green token rather than
+   * restating the hex, so a palette change flows through automatically.
+   * The @supports block is the modern path; the plain declaration above it
+   * keeps the text readable on engines without color-mix().
+   */
+  .page-banner__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--forest-green);
+    opacity: 0.66;
+  }
+
+  @supports (background: color-mix(in srgb, red 50%, transparent)) {
+    .page-banner__overlay {
+      opacity: 1;
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--forest-green) 75%, transparent),
+        color-mix(in srgb, var(--forest-green) 55%, transparent)
+      );
+    }
+  }
+
+  .page-banner__inner {
+    position: relative;
+    padding-block: clamp(2.5rem, 2rem + 2.5vw, 3.5rem);
+    text-align: start;
+  }
+
+  .page-banner h1 {
+    color: #fff;
+    max-inline-size: 22ch;
+    text-shadow: 0 2px 18px rgba(21, 61, 24, 0.35);
+  }
+
+  .page-banner__sub {
+    margin-block-start: 0.875rem;
+    max-inline-size: 56ch;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: clamp(0.9375rem, 0.9rem + 0.3vw, 1.0625rem);
+  }
+
+  /* ---------------------------- breadcrumbs ---------------------------- */
+
+  .page-banner__crumbs {
+    margin-block-start: clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+  }
+
+  .page-banner__crumbs ol {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    font-size: 0.875rem;
+  }
+
+  .page-banner__crumbs li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .page-banner__sep {
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .page-banner__crumbs a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition:
+      color 0.2s var(--ease),
+      text-decoration-color 0.2s var(--ease);
+  }
+
+  .page-banner__crumbs a:hover {
+    color: #fff;
+    text-decoration-color: currentColor;
+  }
+
+  .page-banner__crumbs [aria-current='page'] {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .page-banner h1 {
+      max-inline-size: none;
+    }
+
+    .page-banner__sub {
+      display: none;
+    }
+  }
+</style>

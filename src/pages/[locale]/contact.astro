@@ -1,11 +1,12 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
+import PageBanner from '../../components/PageBanner.astro';
 import Icon from '../../components/Icon.astro';
 import mapPlaceholder from '../../assets/images/map-placeholder.jpg';
+import contactBanner from '../../assets/banners/contact.jpg';
 import { contact, social, whatsappUrl } from '../../config/site';
-import { locales, useTranslations, type Locale } from '../../i18n';
+import { localizePath, locales, useTranslations, type Locale } from '../../i18n';
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -65,11 +66,14 @@ const infoRows = [
 ---
 
 <BaseLayout locale={locale} title={t.seo.contact.title} description={t.seo.contact.description}>
-  <PageHeader
-    locale={locale}
-    eyebrow={t.contact.eyebrow}
+  <PageBanner
     title={t.contact.title}
+    image={contactBanner}
     sub={t.contact.sub}
+    breadcrumbs={[
+      { label: t.nav.home, href: localizePath('/', locale) },
+      { label: t.nav.contact },
+    ]}
   />
 
   <section class="section">

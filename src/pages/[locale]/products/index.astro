@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import PageHeader from '../../../components/PageHeader.astro';
+import PageBanner from '../../../components/PageBanner.astro';
 import ProductCard from '../../../components/ProductCard.astro';
-import { locales, useTranslations, type Locale } from '../../../i18n';
+import productsBanner from '../../../assets/banners/products.jpg';
+import { localizePath, locales, useTranslations, type Locale } from '../../../i18n';
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -22,11 +23,14 @@ const filters = [
 ---
 
 <BaseLayout locale={locale} title={t.seo.products.title} description={t.seo.products.description}>
-  <PageHeader
-    locale={locale}
-    eyebrow={t.products.eyebrow}
+  <PageBanner
     title={t.products.title}
+    image={productsBanner}
     sub={t.products.sub}
+    breadcrumbs={[
+      { label: t.nav.home, href: localizePath('/', locale) },
+      { label: t.nav.products },
+    ]}
   />
 
   <section class="section">

@@ -68,13 +68,13 @@
     "about": {
       "eyebrow": "About us",
       "title": "Rooted in the Nile Delta, built for global markets",
-      "body": "[Placeholder copy — awaiting final content from the client] Al Fath Green was founded to connect Egyptian farmland directly with importers, without middlemen. We work with a network of partner farms and follow the crop at every stage: variety and seed selection, harvest timing, packing, and refrigerated shipping.",
+      "body": "Al Fath Green was founded to connect Egyptian farmland directly with importers, without middlemen. We work with a network of partner farms and follow the crop at every stage: variety and seed selection, harvest timing, packing, and refrigerated shipping.",
       "body2": "What sets us apart isn't the size of a shipment — it's its consistency: the same grade, the same packaging, on the agreed date. Shipment after shipment.",
       "stats": [
-        { "value": "[XX+]", "label": "Partner farms" },
-        { "value": "[XX+]", "label": "Workers & technicians" },
-        { "value": "[XX+]", "label": "Export destinations" },
-        { "value": "[X,XXX]", "label": "Tonnes per year" }
+        { "value": "30+", "label": "Partner Farms" },
+        { "value": "4,500", "label": "Workers & Technicians" },
+        { "value": "13", "label": "Export Countries" },
+        { "value": "15,000+", "label": "Tons per Year" }
       ],
       "videoLabel": "A tour through the fields and the packing house",
       "videoAlt": "The Al Fath Green team inspecting the crop in the field at sunset"
@@ -125,7 +125,7 @@
         { "name": "HACCP", "desc": "Hazard analysis & critical control points" },
         { "name": "Egyptian Export Authority", "desc": "Registered exporter" }
       ],
-      "note": "[Placeholder marks — awaiting official certificate files from the client]"
+      "note": ""
     },
     "cta": {
       "title": "Ready to start an export partnership",
@@ -194,7 +194,7 @@
       "invalidEmail": "Please enter a valid email address.",
       "success": "Your message reached us. We'll reply within 24 working hours.",
       "error": "We couldn't send your message. Please try again, or email us directly.",
-      "notConfigured": "The form isn't connected yet — EmailJS keys need to be set in the environment variables."
+      "notConfigured": "Form will be activated shortly"
     },
     "info": {
       "title": "Contact details",
@@ -205,7 +205,7 @@
       "hours": "Working hours",
       "hoursValue": "Sunday – Thursday, 9am – 5pm (Cairo time)"
     },
-    "mapPlaceholder": "[Location map — awaiting the final address from the client]",
+    "mapPlaceholder": "",
     "mapAlt": "Placeholder image of a location map"
   },
 

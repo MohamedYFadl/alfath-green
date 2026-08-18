@@ -68,13 +68,13 @@
     "about": {
       "eyebrow": "À propos",
       "title": "Enracinés dans le delta du Nil, tournés vers les marchés mondiaux",
-      "body": "[Texte provisoire — en attente du contenu définitif du client] Al Fath Green a été fondée pour relier directement les terres agricoles égyptiennes aux importateurs, sans intermédiaires. Nous travaillons avec un réseau de fermes partenaires et suivons la récolte à chaque étape : choix des variétés et des semences, calendrier de récolte, conditionnement et transport frigorifique.",
+      "body": "Al Fath Green a été fondée pour relier directement les terres agricoles égyptiennes aux importateurs, sans intermédiaires. Nous travaillons avec un réseau de fermes partenaires et suivons la récolte à chaque étape : choix des variétés et des semences, calendrier de récolte, conditionnement et transport frigorifique.",
       "body2": "Ce qui nous distingue n'est pas le volume d'une expédition, mais sa régularité : le même calibre, le même conditionnement, à la date convenue — expédition après expédition.",
       "stats": [
-        { "value": "[XX+]", "label": "Fermes partenaires" },
-        { "value": "[XX+]", "label": "Ouvriers et techniciens" },
-        { "value": "[XX+]", "label": "Pays destinataires" },
-        { "value": "[X,XXX]", "label": "Tonnes par an" }
+        { "value": "30+", "label": "Fermes partenaires" },
+        { "value": "4,500", "label": "Ouvriers et techniciens" },
+        { "value": "13", "label": "Pays d'exportation" },
+        { "value": "15,000+", "label": "Tonnes par an" }
       ],
       "videoLabel": "Une visite des champs et de la station de conditionnement",
       "videoAlt": "L'équipe d'Al Fath Green inspectant la récolte au champ au coucher du soleil"
@@ -125,7 +125,7 @@
         { "name": "HACCP", "desc": "Analyse des dangers et points critiques" },
         { "name": "Autorité égyptienne d'exportation", "desc": "Exportateur enregistré" }
       ],
-      "note": "[Logos provisoires — en attente des certificats officiels du client]"
+      "note": ""
     },
     "cta": {
       "title": "Prêts à engager un partenariat d'exportation",
@@ -194,7 +194,7 @@
       "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
       "success": "Votre message nous est bien parvenu. Nous vous répondrons sous 24 heures ouvrées.",
       "error": "L'envoi de votre message a échoué. Veuillez réessayer ou nous écrire directement par e-mail.",
-      "notConfigured": "Le formulaire n'est pas encore connecté — les clés EmailJS doivent être définies dans les variables d'environnement."
+      "notConfigured": "Le formulaire sera activé prochainement"
     },
     "info": {
       "title": "Coordonnées",
@@ -205,7 +205,7 @@
       "hours": "Horaires",
       "hoursValue": "Dimanche – jeudi, 9h – 17h (heure du Caire)"
     },
-    "mapPlaceholder": "[Carte de localisation — en attente de l'adresse définitive du client]",
+    "mapPlaceholder": "",
     "mapAlt": "Image provisoire d'une carte de localisation"
   },
 
